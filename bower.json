@@ -1,0 +1,22 @@
+{
+  "name": "bnf",
+  "version": "0.1.0",
+  "authors": [
+    "Pygocentrus <pierre.guilhou14@gmail.com>"
+  ],
+  "moduleType": [
+    "amd",
+    "es6",
+    "node"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "app/bower_components",
+    "public",
+    "test",
+    "tests"
+  ],
+  "dependencies": {}
+}
