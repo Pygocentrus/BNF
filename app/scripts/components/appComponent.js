@@ -4,7 +4,6 @@ import _ from 'lodash';
 
 // Components
 import HeaderComponent from '../components/headerComponent';
-import MainComponent from '../components/mainComponent';
 
 // Utils
 import Utils from '../mixins/utils';
@@ -25,7 +24,7 @@ class AppComponent extends React.Component {
     return (
       <div className="wrapper">
         <HeaderComponent/>
-        <MainComponent/>
+        {this.props.children || <NotFoundComponent />}
       </div>
     )
   }

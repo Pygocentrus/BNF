@@ -1,9 +1,8 @@
 // Packages
 import React from 'react';
-import { Link } from 'react-router';
 import { Button, Jumbotron, PageHeader } from 'react-bootstrap';
 
-class MainComponent extends React.Component {
+class LiveComponent extends React.Component {
 
   render() {
 
@@ -11,9 +10,8 @@ class MainComponent extends React.Component {
       <section id="intro" className="container">
         <Jumbotron>
           <PageHeader>
-            Opération BNF <small>- Interface d'administration</small>
+            Livestream
           </PageHeader>
-          <Link to="/live">Live</Link>
         </Jumbotron>
       </section>
     )
@@ -22,4 +20,4 @@ class MainComponent extends React.Component {
 
 }
 
-export default MainComponent;
+export default LiveComponent;

@@ -1,13 +1,9 @@
 // Libs
-import React from 'react'
-import ReactDOM from 'react-dom'
-import Router, { Route, DefaultRoute, NotFoundRoute, Redirect } from 'react-router'
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 // Utils & components
-import AppComponent from './components/appComponent'
+import router from './routes/appRoutes';
 
-// Create a new Todo collection and render the **App** into `#todoapp`.
-ReactDOM.render(
-  <AppComponent />,
-  document.getElementById('bnf-app')
-)
+// Start the router
+ReactDOM.render(router, document.getElementById('bnf-app'));
