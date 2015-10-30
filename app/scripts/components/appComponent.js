@@ -3,7 +3,7 @@ import React from 'react';
 import _ from 'lodash';
 
 // Components
-import HeaderComponent from '../components/headerComponent';
+import HeaderComponent from '../components/HeaderComponent';
 
 // Utils
 import Utils from '../mixins/utils';

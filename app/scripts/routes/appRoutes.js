@@ -4,10 +4,10 @@ import Router, { Route, IndexRoute } from 'react-router';
 import createBrowserHistory from 'history/lib/createBrowserHistory';
 
 // Components
-import AppComponent from '../components/appComponent';
-import MainComponent from '../components/mainComponent';
-import LiveComponent from '../components/liveComponent';
-import NotFoundComponent from '../components/notFoundComponent';
+import AppComponent from '../components/AppComponent';
+import MainComponent from '../components/MainComponent';
+import LiveComponent from '../components/LiveComponent';
+import NotFoundComponent from '../components/NotFoundComponent';
 
 const history = createBrowserHistory({ queryKey: false });
 

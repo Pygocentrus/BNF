@@ -34,7 +34,7 @@ var APP    = 'app/',
     PROXY  = 'localhost:3000',
     ENV    = args.env,
     isProd = ENV === 'production'
-    libs   = ['lodash', 'react', 'react-router', 'react-dom', 'react-bootstrap'];
+    libs   = ['lodash', 'react', 'react-router', 'react-dom', 'react-bootstrap', 'react-router-bootstrap'];
 
 /* Compile ES6 / JSX scripts & bundle with Browserify for custom files */
 gulp.task('scripts-custom', function () {
