@@ -5,7 +5,6 @@ import _ from 'lodash';
 // Components
 import HeaderComponent from '../components/headerComponent';
 import MainComponent from '../components/mainComponent';
-import FooterComponent from '../components/footerComponent';
 
 // Utils
 import Utils from '../mixins/utils';
@@ -27,7 +26,6 @@ class AppComponent extends React.Component {
       <div className="wrapper">
         <HeaderComponent/>
         <MainComponent/>
-        <FooterComponent/>
       </div>
     )
   }

@@ -1,5 +1,6 @@
 // Packages
 import React from 'react';
+import { Navbar, Nav, NavBrand, CollapsibleNav, NavItem } from 'react-bootstrap';
 
 class HeaderComponent extends React.Component {
 
@@ -7,11 +8,16 @@ class HeaderComponent extends React.Component {
 
     return (
       <header role="header">
-        <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Dashboard</a></li>
-          <li><a href="#">About</a></li>
-        </ul>
+        <Navbar toggleNavKey={0}>
+          <NavBrand><a href="#">BNF - Dashboard d'administration</a></NavBrand>
+          <CollapsibleNav eventKey={0}>
+            <Nav navbar right>
+              <NavItem eventKey={1} href="#">Live</NavItem>
+              <NavItem eventKey={2} href="#">Tweets validés</NavItem>
+              <NavItem eventKey={3} href="#">Tweets refusés</NavItem>
+            </Nav>
+          </CollapsibleNav>
+        </Navbar>
       </header>
     )
 

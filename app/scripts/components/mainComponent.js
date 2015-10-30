@@ -1,15 +1,18 @@
 // Packages
 import React from 'react';
+import { Button, Jumbotron, PageHeader } from 'react-bootstrap';
 
 class MainComponent extends React.Component {
 
   render() {
 
     return (
-      <section id="intro">
-        <br/>
-        <h1>Welcome!</h1>
-        <br/>
+      <section id="intro" className="container">
+        <Jumbotron>
+          <PageHeader>
+            Opération BNF <small>- Interface d'administration</small>
+          </PageHeader>
+        </Jumbotron>
       </section>
     )
 

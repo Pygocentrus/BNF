@@ -1,13 +1,14 @@
 @import 'bourbon/bourbon';
+@import 'libs/bootstrap';
 
 @import 'common/variables';
 @import 'common/reset';
 @import 'common/fonts';
+@import 'common/forms';
 
 @import 'common/global';
 
 @import 'layouts/header';
 @import 'layouts/content';
-@import 'layouts/footer';
 
 @import 'components/intro';
