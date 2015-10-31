@@ -2,7 +2,6 @@
 
 public/
 
-app/fonts/
 app/scripts/app.js
 app/scripts/vendors.js
 app/styles/app.css

@@ -1,9 +1,16 @@
-import { keyMirror } from 'react/lib/keyMirror';
+import AppDispatcher from '../dispatcher/AppDispatcher';
+import DashboardConstants from '../constants/DashboardConstants';
 
-let DashboardActions = keyMirror({
-  DASHBOARD_TWEET_ADD: null,
-  DASHBOARD_TWEET_ADDED: null,
-  DASHBOARD_TWEETS_RETRIEVED: null,
-});
+// Define actions for the dashboard
+var DashboardActions = {
+
+  addTweet: function(data) {
+    AppDispatcher.handleAction({
+      actionType: DashboardConstants.DASHBOARD_TWEET_ADD,
+      data: data
+    });
+  },
+
+};
 
 export default DashboardActions;

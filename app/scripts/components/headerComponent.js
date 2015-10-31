@@ -1,6 +1,6 @@
 // Packages
 import React from 'react';
-import { Navbar, Nav, NavBrand, CollapsibleNav, NavItem } from 'react-bootstrap';
+import { Navbar, Nav, NavBrand, CollapsibleNav, NavItem, NavDropdown, Glyphicon } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router';
 
@@ -17,17 +17,37 @@ class HeaderComponent extends React.Component {
           <CollapsibleNav eventKey={0}>
             <Nav navbar right>
               <LinkContainer to="/dashboard">
-                <NavItem eventKey={1} href="#">Dashboard</NavItem>
+                <NavItem eventKey={1} href="#">
+                  <Glyphicon glyph="dashboard" />&nbsp;
+                  Dashboard
+                </NavItem>
               </LinkContainer>
               <LinkContainer to="/live">
-                <NavItem eventKey={2} href="#">Live</NavItem>
+                <NavItem eventKey={2} href="#">
+                  <Glyphicon glyph="globe" />&nbsp;
+                  Live
+                </NavItem>
               </LinkContainer>
-              <LinkContainer to="#">
-                <NavItem eventKey={3} href="#">Tweets validés</NavItem>
+              <LinkContainer to="/queue">
+                <NavItem eventKey={3} href="#">
+                  <Glyphicon glyph="list-alt" />&nbsp;
+                  File d'attente
+                </NavItem>
               </LinkContainer>
-              <LinkContainer to="#">
-                <NavItem eventKey={4} href="#">Tweets refusés</NavItem>
-              </LinkContainer>
+              <NavDropdown eventKey={4} title="Tweets" id="collapsible-navbar-dropdown">
+                <LinkContainer to="/validated">
+                  <NavItem eventKey={5} href="#">
+                    <Glyphicon glyph="ok" />&nbsp;
+                    Validés
+                  </NavItem>
+                </LinkContainer>
+                <LinkContainer to="/rejected">
+                  <NavItem eventKey={6} href="#">
+                    <Glyphicon glyph="remove" />&nbsp;
+                    Refusés
+                  </NavItem>
+                </LinkContainer>
+              </NavDropdown>
             </Nav>
           </CollapsibleNav>
         </Navbar>
