@@ -1,8 +1,7 @@
-import React from 'react';
+import { Dispatcher } from 'flux';
 
-let AppDispatcher = new React.Dispatcher();
+let AppDispatcher = new Dispatcher();
 
-// TODO: All actions
 AppDispatcher.handleViewAction = function(action) {
   this.dispatch({
     source: 'VIEW_ACTION',

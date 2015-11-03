@@ -1,9 +1,9 @@
-import { lib } from 'react';
+import keyMirror from 'fbjs/lib/keyMirror';
 
-let DashboardConstants = lib.keyMirror({
-  DASHBOARD_TWEET_ADD: null,
-  DASHBOARD_TWEET_ADDED: null,
-  DASHBOARD_TWEETS_RETRIEVED: null,
+let DashboardConstants = keyMirror({
+  DASHBOARD_TWEETS_ADD: null,
+  DASHBOARD_TWEETS_REMOVE: null,
+  DASHBOARD_TWEETS_RETRIEVE: null,
 });
 
 export default DashboardConstants;

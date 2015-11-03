@@ -5,40 +5,52 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { Button, Input, Jumbotron, PageHeader, Grid, Row } from 'react-bootstrap';
 import _ from 'lodash';
 
-import TweetComponent from './TweetComponent';
+// Components & modules
+import DailyTweetStore from '../../stores/DashboardDailyTweets';
+import DailyTweetActions from '../../actions/DashboardActions';
+import ListTweetsComponent from './dashboard/ListTweetsComponent';
 
-// TODO: Flux architecture
-// import DashboardDailyTweets from '../stores/DashboardDailyTweets';
+let getDailyTweetsState = () => {
+  return {
+    dailyTweets: DailyTweetStore.getAllDailyTweets()
+  };
+};
 
 class MainComponent extends Component {
 
   constructor(props) {
     super(props);
     this.state = {};
+
+    this._handleChange = this._handleChange.bind(this);
+    this._handleClickNew = this._handleClickNew.bind(this);
+    this._onChange = this._onChange.bind(this);
+    this._reloadTwitterWidget = this._reloadTwitterWidget.bind(this);
   }
 
   componentWillMount() {
-    this.setState({ newTweetValue: '' });
+    this.setState({
+      dailyTweets: this.props.data.dailyTweets,
+      newTweetValue: ''
+    });
+
+    DailyTweetStore.loadDailyTweets(this.props.data.dailyTweets);
   }
 
   componentDidMount() {
-    // Re-scan the DOM to load Twitter cards again,
-    // used when switching back to the dashboard
-    if (twttr) {
-      twttr.widgets.load();
-    }
+    DailyTweetStore.addChangeListener(this._onChange);
+    this._reloadTwitterWidget();
+  }
+
+  componentDidUpdate() {
+    this._reloadTwitterWidget();
+  }
+
+  componentWillUnmount() {
+    DailyTweetStore.removeChangeListener(this._onChange);
   }
 
   render() {
-
-    let dailyTweets = [];
-
-    // Compose each Tweet cards in the grid
-    if (this.props.parentState.dailyTweets) {
-      dailyTweets = this.props.parentState.dailyTweets.map( (tweet) => {
-        return <TweetComponent key={ tweet.id } link={ tweet.link }/>;
-      });
-    }
 
     return (
       <section id="intro" className="container">
@@ -59,29 +71,46 @@ class MainComponent extends Component {
             value={ this.state.newTweetValue }
             placeholder="URL du tweet (ex: https://twitter.com/wild_touch/status/660064048923418624)"
             ref="input"
-            onChange={ this.handleChange } />
-          <Button bsStyle="primary">Ajouter un nouveau Tweet</Button>
+            onChange={ this._handleChange } />
+          <Button
+            bsStyle="primary"
+            onClick={ this._handleClickNew }>
+            Ajouter un nouveau Tweet
+          </Button>
         </div>
 
-        {/* List of daily tweets */}
         <h2>Derniers tweets à surveiller:</h2><hr />
 
-        <Grid>
-          <Row className="show-grid">
-            { dailyTweets }
-          </Row>
-        </Grid>
+        {/* List of daily tweets */}
+        <ListTweetsComponent ref="listTweets" dailyTweets={ this.state.dailyTweets } />
       </section>
     );
 
   }
 
-  handleChange() {
-    // This could also be done using ReactLink:
-    // http://facebook.github.io/react/docs/two-way-binding-helpers.html
+  _onChange() {
+    this.setState(getDailyTweetsState());
+  }
+
+  _handleChange() {
+    // Get the input's content
     this.setState({
       newTweetValue: this.refs.input.getValue()
     });
+  }
+
+  _handleClickNew() {
+    // Check whether the url is valid
+    // DailyTweetStore.addDailyTweet(curURL);
+    DailyTweetActions.addTweet(this.state.newTweetValue);
+  }
+
+  _reloadTwitterWidget() {
+    // Re-scan the DOM to load Twitter cards again,
+    // used when switching back to the dashboard
+    if (twttr && twttr !== undefined) {
+      twttr.widgets.load();
+    }
   }
 
 }

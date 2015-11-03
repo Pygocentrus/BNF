@@ -14,7 +14,6 @@ class AppComponent extends React.Component {
   constructor() {
     super();
     this.state = {};
-    this._awesome = this._awesome.bind(this);
   }
 
   componentWillMount() {
@@ -34,13 +33,9 @@ class AppComponent extends React.Component {
     return (
       <div className="wrapper">
         <HeaderComponent/>
-        { React.cloneElement(this.props.children, { parentState: this.state }) || <NotFoundComponent /> }
+        { React.cloneElement(this.props.children, { data: this.state })}
       </div>
     )
-  }
-
-  _awesome() {
-    // `this` now refers to `AppComponent`
   }
 
 }

@@ -16,7 +16,7 @@ class TweetComponent extends Component {
           <a href={ this.props.link }></a>
         </blockquote>
       </Col>
-    )
+    );
 
   }
 

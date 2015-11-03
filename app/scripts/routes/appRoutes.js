@@ -23,6 +23,7 @@ let Routes = (
       <Route path="queue" component={QueueComponent} />
       <Route path="validated" component={ValidatedTweetsComponent} />
       <Route path="rejected" component={RejectedTweetsComponent} />
+      <Route path="*" component={NotFoundComponent}/>
     </Route>
   </Router>
 );
