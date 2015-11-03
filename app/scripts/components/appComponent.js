@@ -1,5 +1,6 @@
 // Packages
 import React from 'react';
+import Router, { Route, IndexRoute, RouteHandler } from 'react-router';
 import _ from 'lodash';
 
 // Components
@@ -17,14 +18,23 @@ class AppComponent extends React.Component {
   }
 
   componentWillMount() {
+    // var data = this.getData();
+    var data = {
+      dailyTweets: [
+        { id: 1, link: "https://twitter.com/wild_touch/status/660064048923418624" },
+        { id: 2, link: "https://twitter.com/wild_touch/status/660064048923418624" },
+        { id: 3, link: "https://twitter.com/wild_touch/status/660064048923418624" }
+      ]
+    };
 
+    this.setState(data);
   }
 
   render() {
     return (
       <div className="wrapper">
         <HeaderComponent/>
-        {this.props.children || <NotFoundComponent />}
+        { React.cloneElement(this.props.children, { parentState: this.state }) || <NotFoundComponent /> }
       </div>
     )
   }

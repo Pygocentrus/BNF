@@ -1,8 +1,8 @@
 @import 'bourbon/bourbon';
+@import 'common/reset';
 @import 'libs/bootstrap';
 
 @import 'common/variables';
-@import 'common/reset';
 @import 'common/fonts';
 @import 'common/forms';
 
@@ -11,4 +11,5 @@
 @import 'layouts/header';
 @import 'layouts/content';
 
+@import 'components/tweet';
 @import 'components/intro';
