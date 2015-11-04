@@ -41,7 +41,12 @@ class LiveComponent extends React.Component {
 
     socket.emit('livestream:retweets:all');
     socket.on('livestream:retweets:all', (retweets) => {
+      console.log('All!', retweets);
       // TODO: Dispatch the retweets to the dispatcher through the action
+    });
+
+    socket.on('live:tweets:new', (tweet) => {
+      console.log('tweet:', tweet);
     });
 
     LivestreamActions.getAllRetweets(liveTweets);

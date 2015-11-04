@@ -5,16 +5,28 @@ import hbs from 'express-handlebars';
 import cliArgs from 'yargs';
 import bodyParser from 'body-parser';
 import socketIo from 'socket.io';
+import mongoose from 'mongoose';
 
-// Controllers
+import Twit from 'twit';
+
+// Modules
 import Conf from './conf';
 import Api from './routers';
 import SocketManager from './controllers/socket';
+
+// Controllers
 import DailyTweetsCtrl from './controllers/dailyTweets';
+import LivestreamCtrl from './controllers/liveStream';
+
+// Workers
+import twitterWorker from './workers/twitterWorker';
 
 let App = {
 
   start() {
+
+    // Start the Twitter worker
+    twitterWorker();
 
     // App bootstraping
     let app = express();
@@ -25,6 +37,10 @@ let App = {
     let args = cliArgs.argv;
     let assetsPath = __dirname + '/../' + (args.production ? 'public' : 'app');
     let port = args.production ? Conf.ports.prod : Conf.ports.dev;
+
+    // Connect to mongo server
+    let mongoUri = args.production ? Conf.mongo.prod : Conf.mongo.dev;
+    mongoose.connect('mongodb://' + mongoUri);
 
     // Front reserved routes that are
     // being rerouted towards index
@@ -80,6 +96,12 @@ let App = {
     	socket.on('dashboard:daily-tweets:remove', () => {
 				io.emit('dashboard:daily-tweets:remove', { answer: 'removed!' });
     	});
+
+      socket.on('livestream:retweets:all', () => {
+        LivestreamCtrl.getReTweets((err, retweets) => {
+          io.emit('livestream:retweets:all', { retweets: retweets, err: err });
+        });
+      });
     });
 
   }
