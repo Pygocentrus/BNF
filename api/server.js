@@ -25,9 +25,6 @@ let App = {
 
   start() {
 
-    // Start the Twitter worker
-    twitterWorker();
-
     // App bootstraping
     let app = express();
     let server = http.Server(app);
@@ -78,6 +75,10 @@ let App = {
 
     // Socket transport mode
     io.set('transports', ['polling', 'websocket']);
+
+    // Start the Twitter worker
+    // TODO: send IO's instance to broadcast new RT
+    twitterWorker(io);
 
     // New client connected
     io.on('connection', (socket) => {
