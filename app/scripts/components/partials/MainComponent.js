@@ -67,7 +67,7 @@ class MainComponent extends Component {
   componentWillUnmount() {
     // Remove listeners on route change, preventing double bindings
     DailyTweetStore.removeChangeListener(this._onChange);
-    socket.removeAllListeners('dashboard:daily-tweets:all:response');
+    socket.removeAllListeners('dashboard:daily-tweets:all');
   }
 
   render() {
