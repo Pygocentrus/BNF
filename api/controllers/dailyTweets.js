@@ -5,12 +5,6 @@ import { argv } from 'yargs';
 import DailyTweet from '../models/DailyTweet';
 import Conf from '../conf';
 
-// Vars
-let mongoUri = argv.production ? Conf.mongo.prod : Conf.mongo.dev;
-
-// Connect to mongo server
-mongoose.connect('mongodb://' + mongoUri);
-
 let dailyTweetsCtrl = {
 
   getDailyTweets: function(cb) {
