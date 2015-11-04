@@ -13,27 +13,15 @@ class AppComponent extends React.Component {
 
   constructor() {
     super();
-    this.state = {};
   }
 
-  componentWillMount() {
-    // var data = this.getData();
-    var data = {
-      dailyTweets: [
-        { id: 1, link: "https://twitter.com/wild_touch/status/660064048923418624" },
-        { id: 2, link: "https://twitter.com/wild_touch/status/660064048923418624" },
-        { id: 3, link: "https://twitter.com/wild_touch/status/660064048923418624" }
-      ]
-    };
-
-    this.setState(data);
-  }
+  componentWillMount() {}
 
   render() {
     return (
       <div className="wrapper">
         <HeaderComponent/>
-        { React.cloneElement(this.props.children, { data: this.state })}
+        { this.props.children }
       </div>
     )
   }
