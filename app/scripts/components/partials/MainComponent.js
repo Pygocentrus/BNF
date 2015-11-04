@@ -3,13 +3,19 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Button, Input, Jumbotron, PageHeader, Grid, Row } from 'react-bootstrap';
+import io from 'socket.io-client';
 import _ from 'lodash';
 
 // Components & modules
+import Conf from '../../conf/conf';
 import DailyTweetStore from '../../stores/DashboardDailyTweets';
 import DailyTweetActions from '../../actions/DashboardActions';
 import ListTweetsComponent from './dashboard/ListTweetsComponent';
 
+// Socket io Instance
+let socket = io.connect(Conf.socketHost);
+
+// Daily tweets update from the store
 let getDailyTweetsState = () => {
   return {
     dailyTweets: DailyTweetStore.getAllDailyTweets()
@@ -38,8 +44,17 @@ class MainComponent extends Component {
   }
 
   componentDidMount() {
+    // Watch changes from the store
     DailyTweetStore.addChangeListener(this._onChange);
+
+    // Reload the Twitter widget
     this._reloadTwitterWidget();
+
+    socket.emit('dashboard:daily-tweets:all');
+
+    socket.on('dashboard:daily-tweets:all', (data) => {
+      console.log('Daily tweets: ', data);
+    });
   }
 
   componentDidUpdate() {
