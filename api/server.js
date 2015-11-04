@@ -8,8 +8,9 @@ import socketIo from 'socket.io';
 
 // Controllers
 import Conf from './conf';
-import Api from './controllers';
+import Api from './routers';
 import SocketManager from './controllers/socket';
+import DailyTweetsCtrl from './controllers/dailyTweets';
 
 let App = {
 
@@ -62,19 +63,20 @@ let App = {
     // Socket transport mode
     io.set('transports', ['polling', 'websocket']);
 
-    // Use wrapper for socket routes
-    // sm = new SocketManager(io);
-
     // New client connected
     io.on('connection', (socket) => {
       io.emit('test', { foo: 'great' });
 
       socket.on('dashboard:daily-tweets:all', () => {
-    		io.emit('dashboard:daily-tweets:all', { answer: 'all!' });
+        DailyTweetsCtrl.getDailyTweets((err, dailyTweets) => {
+          io.emit('dashboard:daily-tweets:all', { dailyTweets: dailyTweets, err: err });
+        });
     	});
 
-    	socket.on('dashboard:daily-tweets:new', () => {
-				io.emit('dashboard:daily-tweets:new', { answer: 'new!' });
+    	socket.on('dashboard:daily-tweets:new', (tweet) => {
+        DailyTweetsCtrl.postDailyTweet(tweet, (err, newTweet) => {
+          io.emit('dashboard:daily-tweets:new', { tweet: newTweet, err: err });
+        });
     	});
 
     	socket.on('dashboard:daily-tweets:remove', () => {

@@ -1,9 +1,11 @@
 // NPM
 import { EventEmitter } from 'events';
 import { lib } from 'react';
+import io from 'socket.io-client';
 import _ from 'lodash';
 
 // Modules
+import Conf from '../conf/conf';
 import Utils from '../mixins/utils';
 import AppDispatcher from '../dispatchers/AppDispatcher';
 import DashboardConstants from '../constants/DashboardConstants';
@@ -11,6 +13,9 @@ import DashboardConstants from '../constants/DashboardConstants';
 // Internal object of daily tweets
 let _dailyTweets = [];
 let _newTweetUrl = '';
+
+// Socket io Instance
+let socket = io.connect(Conf.socketHost);
 
 function getDailyTweets() {
   return _dailyTweets;
@@ -22,10 +27,14 @@ function loadDailyTweets(tweets) {
 
 function addTweet(tweetUrl) {
   if (Utils.isUrl(tweetUrl)) {
-    _dailyTweets.push({
+    // Add the tweet locally
+    _dailyTweets.unshift({
       id: getNextIndex(),
       link: tweetUrl
     });
+
+    // Add this tweet in the backend
+    socket.emit('dashboard:daily-tweets:new', _.first(_dailyTweets));
   }
 }
 
@@ -37,7 +46,7 @@ function getNextIndex() {
   if (!_dailyTweets.length) {
     return 1;
   }
-  return _.last(_dailyTweets).id + 1;
+  return _.first(_dailyTweets).id + 1;
 }
 
 // Merge our store with Node's Event Emitter
@@ -92,6 +101,9 @@ AppDispatcher.register((payload) => {
       break;
     case DashboardConstants.DASHBOARD_TWEETS_REMOVE:
       removeTweet(action.tweet);
+      break;
+    case DashboardConstants.DASHBOARD_TWEETS_ALL:
+      loadDailyTweets(action.tweets);
       break;
     default:
       return true;

@@ -32,15 +32,24 @@ class MainComponent extends Component {
     this._handleClickNew = this._handleClickNew.bind(this);
     this._onChange = this._onChange.bind(this);
     this._reloadTwitterWidget = this._reloadTwitterWidget.bind(this);
+    this._resetInputValue = this._resetInputValue.bind(this);
   }
 
   componentWillMount() {
-    this.setState({
-      dailyTweets: this.props.data.dailyTweets,
-      newTweetValue: ''
+    this._resetInputValue();
+
+    // Ask for all daily tweets
+    socket.emit('dashboard:daily-tweets:all');
+    socket.on('dashboard:daily-tweets:all', (data) => {
+      // Tell the dispatcher that we have fresh data to broadcast
+      // all along the app
+      DailyTweetActions.getDailyTweets(data);
     });
 
-    DailyTweetStore.loadDailyTweets(this.props.data.dailyTweets);
+    // When a new tweet has been added to the backend
+    socket.on('dashboard:daily-tweets:new', (data) => {
+      this._resetInputValue();
+    });
   }
 
   componentDidMount() {
@@ -49,12 +58,6 @@ class MainComponent extends Component {
 
     // Reload the Twitter widget
     this._reloadTwitterWidget();
-
-    socket.emit('dashboard:daily-tweets:all');
-
-    socket.on('dashboard:daily-tweets:all', (data) => {
-      console.log('Daily tweets: ', data);
-    });
   }
 
   componentDidUpdate() {
@@ -62,7 +65,9 @@ class MainComponent extends Component {
   }
 
   componentWillUnmount() {
+    // Remove listeners on route change, preventing double bindings
     DailyTweetStore.removeChangeListener(this._onChange);
+    socket.removeAllListeners('dashboard:daily-tweets:all:response');
   }
 
   render() {
@@ -84,7 +89,7 @@ class MainComponent extends Component {
           <Input
             type="text"
             value={ this.state.newTweetValue }
-            placeholder="URL du tweet (ex: https://twitter.com/wild_touch/status/660064048923418624)"
+            placeholder="https://twitter.com/wild_touch/status/660064048923418624"
             ref="input"
             onChange={ this._handleChange } />
           <Button
@@ -126,6 +131,10 @@ class MainComponent extends Component {
     if (twttr && twttr !== undefined) {
       twttr.widgets.load();
     }
+  }
+
+  _resetInputValue() {
+    this.setState({ newTweetValue: '' });
   }
 
 }

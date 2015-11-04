@@ -4,6 +4,13 @@ import DashboardConstants from '../constants/DashboardConstants';
 // Define actions for the dashboard
 var DashboardActions = {
 
+  getDailyTweets: function(data) {
+    AppDispatcher.handleViewAction({
+      actionType: DashboardConstants.DASHBOARD_TWEETS_ALL,
+      tweets: data.dailyTweets
+    });
+  },
+
   addTweet: function(data) {
     AppDispatcher.handleViewAction({
       actionType: DashboardConstants.DASHBOARD_TWEETS_ADD,
@@ -11,10 +18,10 @@ var DashboardActions = {
     });
   },
 
-  removeTweet: function(data) {
+  removeTweet: function(tweet) {
     AppDispatcher.handleViewAction({
       actionType: DashboardConstants.DASHBOARD_TWEETS_REMOVE,
-      data: data
+      tweet: tweet
     });
   },
 
