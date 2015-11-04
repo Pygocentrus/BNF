@@ -1,6 +1,6 @@
 // Packages
 import React from 'react';
-import { Navbar, Nav, NavBrand, CollapsibleNav, NavItem, NavDropdown, Glyphicon } from 'react-bootstrap';
+import { Navbar, Nav, NavBrand, CollapsibleNav, NavItem, NavDropdown, Glyphicon, Badge } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router';
 
@@ -25,13 +25,13 @@ class HeaderComponent extends React.Component {
               <LinkContainer to="/live">
                 <NavItem eventKey={2} href="#">
                   <Glyphicon glyph="globe" />&nbsp;
-                  Live
+                  Live&nbsp;<Badge>5</Badge>
                 </NavItem>
               </LinkContainer>
               <LinkContainer to="/queue">
                 <NavItem eventKey={3} href="#">
                   <Glyphicon glyph="list-alt" />&nbsp;
-                  File d'attente
+                  File d'attente BNF
                 </NavItem>
               </LinkContainer>
               <NavDropdown eventKey={4} title="Tweets" id="collapsible-navbar-dropdown">

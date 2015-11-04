@@ -65,8 +65,6 @@ let App = {
 
     // New client connected
     io.on('connection', (socket) => {
-      io.emit('test', { foo: 'great' });
-
       socket.on('dashboard:daily-tweets:all', () => {
         DailyTweetsCtrl.getDailyTweets((err, dailyTweets) => {
           io.emit('dashboard:daily-tweets:all', { dailyTweets: dailyTweets, err: err });
