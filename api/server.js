@@ -77,7 +77,6 @@ let App = {
     io.set('transports', ['polling', 'websocket']);
 
     // Start the Twitter worker
-    // TODO: send IO's instance to broadcast new RT
     twitterWorker(io);
 
     // New client connected
@@ -101,6 +100,26 @@ let App = {
       socket.on('livestream:retweets:all', () => {
         LivestreamCtrl.getReTweets((err, retweets) => {
           io.emit('livestream:retweets:all', { retweets: retweets, err: err });
+        });
+      });
+
+      socket.on('livestream:retweets:validate', (retweet) => {
+        let options = { hasBeenValidated: true, isValid: true };
+
+        LivestreamCtrl.updateReTweet(retweet, options, (err, rt) => {
+          if (!err) {
+            io.emit('livestream:retweets:validate', { retweet: rt, err: err });
+          }
+        });
+      });
+
+      socket.on('livestream:retweets:reject', (retweet) => {
+        let options = { hasBeenValidated: true, isValid: false };
+
+        LivestreamCtrl.updateReTweet(retweet, options, (err, rt) => {
+          if (!err) {
+            io.emit('livestream:retweets:reject', { retweet: rt, err: err });
+          }
         });
       });
     });

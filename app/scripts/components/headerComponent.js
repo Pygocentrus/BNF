@@ -32,6 +32,12 @@ class HeaderComponent extends React.Component {
         case LivestreamConstants.LIVESTREAM_RETWEETS_NEW:
           this.setState({ counter: this.state.counter + 1 });
           break;
+        case LivestreamConstants.LIVESTREAM_RETWEETS_VALIDATE:
+          this.setState({ counter: this.state.counter - 1 });
+          break;
+        case LivestreamConstants.LIVESTREAM_RETWEETS_REJECT:
+          this.setState({ counter: this.state.counter - 1 });
+          break;
         default:
           return true;
       }
