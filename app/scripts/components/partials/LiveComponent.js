@@ -3,12 +3,14 @@ import React from 'react';
 import { Button, Jumbotron, PageHeader } from 'react-bootstrap';
 import io from 'socket.io-client';
 
-// Modules & Components
+// Modules
 import Conf from '../../conf/conf';
 import AppDispatcher from '../../dispatchers/AppDispatcher';
 import LiveStreamStore from '../../stores/LivestreamStore';
 import LivestreamActions from '../../actions/LivestreamActions';
 import LivestreamConstants from '../../constants/LivestreamConstants';
+
+// Components
 import LiveTweets from './live/TweetsTabComponent';
 
 // Socket io Instance
@@ -72,6 +74,7 @@ class LiveComponent extends React.Component {
     // Remove listeners on route change, preventing double bindings
     LiveStreamStore.removeChangeListener(this._onChange);
     socket.removeAllListeners('livestream:retweets:all');
+    socket.removeAllListeners('live:tweets:new');
   }
 
   render() {
@@ -81,7 +84,7 @@ class LiveComponent extends React.Component {
         {/* Intro header */}
         <Jumbotron>
           <PageHeader>
-            Livestream Tweeter
+            Livestream Twitter
           </PageHeader>
         </Jumbotron>
 

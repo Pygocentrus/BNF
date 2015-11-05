@@ -17,6 +17,7 @@ import SocketManager from './controllers/socket';
 // Controllers
 import DailyTweetsCtrl from './controllers/dailyTweets';
 import LivestreamCtrl from './controllers/liveStream';
+import BnfQueueCtrl from './controllers/bnfQueue';
 
 // Workers
 import twitterWorker from './workers/twitterWorker';
@@ -63,12 +64,12 @@ let App = {
     });
 
     // API Routes
-    app.use('/api', Api);
+    // app.use('/api', Api);
     // Default route serving the view otherwise
     app.get(indexRoutes, (req, res) => res.render('index'));
 
     // Start app
-    server.listen(port, () => console.log('Listening on port 3000...'));
+    server.listen(port, () => console.log('Listening on port ' + port + '...'));
 
     // Link socket through the http server
     io = socketIo(server);
@@ -120,6 +121,12 @@ let App = {
           if (!err) {
             io.emit('livestream:retweets:reject', { retweet: rt, err: err });
           }
+        });
+      });
+
+      socket.on('queue:retweets:all', () => {
+        BnfQueueCtrl.getQueueReTweets((err, retweets) => {
+          io.emit('queue:retweets:all', { retweets: retweets, err: err });
         });
       });
     });
