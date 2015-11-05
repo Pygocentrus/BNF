@@ -4,6 +4,7 @@ import { Table, Row } from 'react-bootstrap';
 
 // Single tweet card
 import TweetRow from './TweetsRowComponent';
+import Utils from '../../../mixins/utils';
 
 class TweetsTabComponent extends Component {
 
@@ -24,12 +25,13 @@ class TweetsTabComponent extends Component {
     let tweets = rows.map((tweet) => {
       return (
         <TweetRow
-          key={ tweet.rtId }
+          key={ Utils.generateUniqueKey(tweet.rtId) }
           photo={ tweet.photo }
           username={ tweet.username }
           name={ tweet.name }
           location={ tweet.location }
           followers={ tweet.followers }
+          link={ tweet.originalTweetId }
           id={ tweet.tweetId }
           rtId={ tweet.rtId }
         />
@@ -45,6 +47,7 @@ class TweetsTabComponent extends Component {
             <th>Nom</th>
             <th>Lieu</th>
             <th>Followers</th>
+            <th>Post</th>
             <th>Actions</th>
           </tr>
         </thead>
