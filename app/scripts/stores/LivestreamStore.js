@@ -30,7 +30,7 @@ function loadRetweets(retweets) {
 }
 
 function removeRetweet(retweet) {
-  _retweets = retweet.filter((rt) => rt.id !== rewteet.id);
+  _retweets = _retweets.filter((rt) => rt.rtId !== retweet);
 }
 
 function addRetweet(retweet) {
@@ -84,6 +84,12 @@ AppDispatcher.register((payload) => {
       addRetweet(action.retweet);
       break;
     case LivestreamConstants.LIVESTREAM_RETWEETS_DELETE:
+      removeRetweet(action.retweet);
+      break;
+    case LivestreamConstants.LIVESTREAM_RETWEETS_REJECT:
+      removeRetweet(action.retweet);
+      break;
+    case LivestreamConstants.LIVESTREAM_RETWEETS_VALIDATE:
       removeRetweet(action.retweet);
       break;
     default:

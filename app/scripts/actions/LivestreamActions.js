@@ -25,17 +25,17 @@ var LivestreamActions = {
     });
   },
 
-  rejectRetweet: function(data) {
+  rejectRetweet: function(tweetId) {
     AppDispatcher.handleViewAction({
       actionType: LivestreamConstants.LIVESTREAM_RETWEETS_REJECT,
-      retweet: data.retweet
+      retweet: tweetId
     });
   },
 
-  validateRetweet: function(data) {
+  validateRetweet: function(tweetId) {
     AppDispatcher.handleViewAction({
       actionType: LivestreamConstants.LIVESTREAM_RETWEETS_VALIDATE,
-      retweet: data.retweet
+      retweet: tweetId
     });
   },
 

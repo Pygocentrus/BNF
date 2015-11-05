@@ -5,8 +5,10 @@ import io from 'socket.io-client';
 
 // Modules & Components
 import Conf from '../../conf/conf';
+import AppDispatcher from '../../dispatchers/AppDispatcher';
 import LiveStreamStore from '../../stores/LivestreamStore';
 import LivestreamActions from '../../actions/LivestreamActions';
+import LivestreamConstants from '../../constants/LivestreamConstants';
 import LiveTweets from './live/TweetsTabComponent';
 
 // Socket io Instance
@@ -47,6 +49,23 @@ class LiveComponent extends React.Component {
   componentDidMount() {
     // Watch changes from the store
     LiveStreamStore.addChangeListener(this._onChange);
+
+    // Validate / reject tweet server calls through socket
+    AppDispatcher.register((payload) => {
+      let action = payload.action;
+
+      switch(action.actionType) {
+        case LivestreamConstants.LIVESTREAM_RETWEETS_VALIDATE:
+          socket.emit('livestream:retweets:validate', { retweet: action.retweet });
+          break;
+        case LivestreamConstants.LIVESTREAM_RETWEETS_REJECT:
+          socket.emit('livestream:retweets:reject', { retweet: action.retweet });
+          break;
+        default:
+          return true;
+      }
+      return true;
+    });
   }
 
   componentWillUnmount() {

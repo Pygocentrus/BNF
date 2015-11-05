@@ -1,8 +1,10 @@
 // Packages
 import React, { Component, PropTypes } from 'react';
-import { Table, Row, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { Link } from 'react-router';
-import { LinkContainer } from 'react-router-bootstrap';
+
+// Modules
+import LivestreamActions from '../../../actions/LivestreamActions';
 
 class TweetsRowComponent extends Component {
 
@@ -58,11 +60,11 @@ class TweetsRowComponent extends Component {
   }
 
   _handleValidate() {
-    console.log('Validate', this.props.rtId);
+    LivestreamActions.validateRetweet(this.props.rtId);
   }
 
   _handleReject() {
-    console.log('Reject', this.props.rtId);
+    LivestreamActions.rejectRetweet(this.props.rtId);
   }
 
 }
