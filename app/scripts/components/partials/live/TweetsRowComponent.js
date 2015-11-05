@@ -1,9 +1,10 @@
 // Packages
 import React, { Component, PropTypes } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Glyphicon } from 'react-bootstrap';
 import { Link } from 'react-router';
 
 // Modules
+import Utils from '../../../mixins/utils';
 import LivestreamActions from '../../../actions/LivestreamActions';
 
 class TweetsRowComponent extends Component {
@@ -12,14 +13,11 @@ class TweetsRowComponent extends Component {
     super(props);
 
     this._linkToUser = this._linkToUser.bind(this);
+    this._linkToOriginalPost = this._linkToOriginalPost.bind(this);
     this._cleanLocation = this._cleanLocation.bind(this);
     this._handleValidate = this._handleValidate.bind(this);
     this._handleReject = this._handleReject.bind(this);
   }
-
-  componentWillMount() {}
-
-  componentDidMount() {}
 
   render() {
 
@@ -30,13 +28,14 @@ class TweetsRowComponent extends Component {
         <td>{ this.props.name }</td>
         <td>{ this._cleanLocation(this.props.location) }</td>
         <td>{ this.props.followers }</td>
+        <td>{ this._linkToOriginalPost(this.props.link) }</td>
         <td>
           <Button
             bsStyle="success"
             onClick={ this._handleValidate }>
             Valider
-          </Button>&nbsp;
-
+          </Button>
+          &nbsp;&nbsp;
           <Button
             bsStyle="danger"
             onClick={ this._handleReject }>
@@ -49,9 +48,16 @@ class TweetsRowComponent extends Component {
   }
 
   _linkToUser(username) {
-    let userLink = 'http://twitter.com/' + username;
+    let userLink = Utils.twitterUserLink(username);
     return (
       <a href={ userLink } target="_blank">@{ username }</a>
+    );
+  }
+
+  _linkToOriginalPost(id) {
+    let postLink = Utils.twitterPostLink(id);
+    return (
+      <a href={ postLink } target="_blank"><Glyphicon glyph="share" /></a>
     );
   }
 
