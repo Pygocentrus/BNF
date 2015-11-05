@@ -1,12 +1,16 @@
 // Packages
 import React, { Component, PropTypes } from 'react';
 import { Table, Row, Button } from 'react-bootstrap';
+import { Link } from 'react-router';
+import { LinkContainer } from 'react-router-bootstrap';
 
 class TweetsRowComponent extends Component {
 
   constructor(props) {
     super(props);
 
+    this._linkToUser = this._linkToUser.bind(this);
+    this._cleanLocation = this._cleanLocation.bind(this);
     this._handleValidate = this._handleValidate.bind(this);
     this._handleReject = this._handleReject.bind(this);
   }
@@ -20,7 +24,10 @@ class TweetsRowComponent extends Component {
     return (
       <tr>
         <td><img src={ this.props.photo }/></td>
-        <td>{ this.props.username }</td>
+        <td>{ this._linkToUser(this.props.username) }</td>
+        <td>{ this.props.name }</td>
+        <td>{ this._cleanLocation(this.props.location) }</td>
+        <td>{ this.props.followers }</td>
         <td>
           <Button
             bsStyle="success"
@@ -39,12 +46,23 @@ class TweetsRowComponent extends Component {
 
   }
 
+  _linkToUser(username) {
+    let userLink = 'http://twitter.com/' + username;
+    return (
+      <a href={ userLink } target="_blank">@{ username }</a>
+    );
+  }
+
+  _cleanLocation(location) {
+    return location ? location : '-';
+  }
+
   _handleValidate() {
-    console.log('Validate', this.props.id);
+    console.log('Validate', this.props.rtId);
   }
 
   _handleReject() {
-    console.log('Reject', this.props.id);
+    console.log('Reject', this.props.rtId);
   }
 
 }

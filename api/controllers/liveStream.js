@@ -10,7 +10,7 @@ let livestreamCtrl = {
   getReTweets: function(cb) {
     Retweet
       .find({})
-      .sort({ date: 'desc' })
+      .sort({ date: 'asc' })
       .exec((err, retweets) => {
         if (err || !retweets) {
           cb.call(this, err, null);

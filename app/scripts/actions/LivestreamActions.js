@@ -7,7 +7,14 @@ var LivestreamActions = {
   getAllRetweets: function(data) {
     AppDispatcher.handleViewAction({
       actionType: LivestreamConstants.LIVESTREAM_RETWEETS_ALL,
-      retweets: data.liveTweets
+      retweets: data.liveTweets.retweets
+    });
+  },
+
+  counterUpdate: function(data) {
+    AppDispatcher.handleViewAction({
+      actionType: LivestreamConstants.LIVESTREAM_RETWEETS_COUNTER,
+      counter: data.notifications
     });
   },
 
