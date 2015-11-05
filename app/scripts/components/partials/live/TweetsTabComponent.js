@@ -17,13 +17,21 @@ class TweetsTabComponent extends Component {
 
   render() {
 
-    let tweets = this.props.liveTweets.map((tweet) => {
+    let rows = this.props.liveTweets.length
+      ? this.props.liveTweets.filter((tw) => tw && tw.tweetId !== null)
+      : [];
+
+    let tweets = rows.map((tweet) => {
       return (
         <TweetRow
-          key={ tweet.id }
+          key={ tweet.rtId }
           photo={ tweet.photo }
           username={ tweet.username }
-          id={ tweet.id }
+          name={ tweet.name }
+          location={ tweet.location }
+          followers={ tweet.followers }
+          id={ tweet.tweetId }
+          rtId={ tweet.rtId }
         />
       );
     });
@@ -34,6 +42,9 @@ class TweetsTabComponent extends Component {
           <tr>
             <th>Photo de profil</th>
             <th>Username</th>
+            <th>Nom</th>
+            <th>Lieu</th>
+            <th>Followers</th>
             <th>Actions</th>
           </tr>
         </thead>

@@ -4,7 +4,40 @@ import { Navbar, Nav, NavBrand, CollapsibleNav, NavItem, NavDropdown, Glyphicon,
 import { LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router';
 
+// Modules
+import AppDispatcher from '../dispatchers/AppDispatcher';
+import LivestreamConstants from '../constants/LivestreamConstants';
+
 class HeaderComponent extends React.Component {
+
+  constructor(props) {}
+
+  componentWillMount() {
+    this.setState({
+      counter: 0
+    });
+  }
+
+  componentDidMount() {
+    // Register dispatcher callback
+    AppDispatcher.register((payload) => {
+      let action = payload.action;
+
+      switch(action.actionType) {
+        case LivestreamConstants.LIVESTREAM_RETWEETS_ALL:
+          if (action.retweets.length) {
+            this.setState({ counter: action.retweets.length });
+          }
+          break;
+        case LivestreamConstants.LIVESTREAM_RETWEETS_NEW:
+          this.setState({ counter: this.state.counter + 1 });
+          break;
+        default:
+          return true;
+      }
+      return true;
+    });
+  }
 
   render() {
 
@@ -25,7 +58,7 @@ class HeaderComponent extends React.Component {
               <LinkContainer to="/live">
                 <NavItem eventKey={2} href="#">
                   <Glyphicon glyph="globe" />&nbsp;
-                  Live&nbsp;<Badge>5</Badge>
+                  Live&nbsp;<Badge>{ this.state.counter }</Badge>
                 </NavItem>
               </LinkContainer>
               <LinkContainer to="/queue">

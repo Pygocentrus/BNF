@@ -21,6 +21,10 @@ function getAllRewteets() {
   return _retweets;
 }
 
+function rewteetCounter() {
+  return _retweets.length;
+}
+
 function loadRetweets(retweets) {
   _retweets = retweets;
 }
@@ -43,6 +47,10 @@ let LiveStreamStore = _.merge(EventEmitter.prototype, {
   // Returns all the retweets
   getAllRewteets() {
     return _retweets;
+  },
+
+  rewteetCounter() {
+    return rewteetCounter();
   },
 
   removeRetweet(retweet) {

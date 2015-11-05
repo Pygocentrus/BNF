@@ -14,16 +14,29 @@ class TweetHandler {
 
   manage(tweet) {
     if (this.isNotMainAccountTweet(tweet) && this.isRetweet(tweet)) {
-      let retweetId = tweet.retweeted_status.id_str.replace(/\'/g, "");
-      // console.log(retweetId, tweet.text);
+      let reTweetId = tweet.id_str.replace(/\'/g, "");
+      let originalTweetId = tweet.retweeted_status.id_str.replace(/\'/g, "");
 
       this.checkOneOfDailyTweet(tweet, (err, matchingDailyTweets, tweet) => {
         if (!err && matchingDailyTweets.length) {
 
-          // TODO: Save RT !
+          let rt = new Retweet();
+          rt.tweetId = Date.now();
+          rt.rtId = reTweetId;
+          rt.originalTweetId = originalTweetId;
+          rt.username = tweet.user.screen_name;
+          rt.name = tweet.user.name;
+          rt.location = tweet.user.location;
+          rt.photo = tweet.user.profile_image_url;
+          rt.followers = tweet.user.followers_count;
+          rt.date = Date.now();
 
-          // Broadcast the new tweet
-          this.broadcast(tweet);
+          rt.save((err, retweet) => {
+            if (!err && retweet) {
+              // Broadcast the new tweet
+              this.broadcast(retweet);
+            }
+          });
         }
       });
     }
