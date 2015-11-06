@@ -20,6 +20,28 @@ let BnfQueueCtrl = {
       });
   },
 
+  cancelQueueReTweet: function(rtId, cb) {
+    Retweet.findOne({ rtId: rtId }, (err, retweet) => {
+      if (err || !retweet) {
+        cb(err, null);
+      } else {
+
+        // Cancel its status
+        retweet.isValid = false;
+
+        // Save it
+        retweet.save((err, tweet) => {
+          if (err || !tweet) {
+            cb(err, null);
+          } else {
+            // Send back the freshly save tweet
+            cb(null, tweet);
+          }
+        });
+      }
+    });
+  },
+
 };
 
 export default BnfQueueCtrl;

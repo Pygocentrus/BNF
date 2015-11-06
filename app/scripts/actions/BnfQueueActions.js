@@ -18,10 +18,10 @@ var BnfQueueActions = {
     });
   },
 
-  cancelDisplay: function(tweetId) {
+  cancelDisplay: function(data) {
     AppDispatcher.handleViewAction({
       actionType: BnfQueueConstants.BNF_QUEUE_CANCEL_DISPLAY,
-      retweet: tweetId
+      retweet: data.retweet
     });
   },
 

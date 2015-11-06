@@ -30,7 +30,7 @@ function loadRetweets(retweets) {
 }
 
 function removeRetweet(retweet) {
-  _bnfRetweets = _bnfRetweets.filter((rt) => rt.rtId !== retweet);
+  _.remove(_bnfRetweets, (rt) => rt.rtId === retweet);
 }
 
 function addRetweet(retweet) {

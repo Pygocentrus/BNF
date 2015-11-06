@@ -134,6 +134,12 @@ let App = {
           io.emit('queue:retweets:all', { retweets: retweets, err: err });
         });
       });
+
+      socket.on('queue:retweets:cancel', (data) => {
+        BnfQueueCtrl.cancelQueueReTweet(data.retweetId, (err, tweet) => {
+          io.emit('queue:retweets:cancel', { retweet: tweet, err: err });
+        });
+      });
     });
 
   }
