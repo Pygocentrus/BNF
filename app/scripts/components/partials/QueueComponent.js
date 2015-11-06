@@ -42,10 +42,6 @@ class QueueComponent extends React.Component {
     socket.on('queue:retweets:all', (retweets) => {
       BnfQueueActions.getAllBnfRetweets({ bnfQueueTweets: retweets });
     });
-
-    // socket.on('live:tweets:new', (retweet) => {
-    //   BnfQueueActions.newBnfEntry({ retweet: retweet.tweet });
-    // });
   }
 
   componentDidMount() {
@@ -57,9 +53,9 @@ class QueueComponent extends React.Component {
       let action = payload.action;
 
       switch(action.actionType) {
-        // case LivestreamConstants.LIVESTREAM_RETWEETS_VALIDATE:
-        //   socket.emit('livestream:retweets:validate', { retweet: action.retweet });
-        //   break;
+        case BnfQueueConstants.BNF_QUEUE_CANCEL_DISPLAY:
+          socket.emit('queue:retweets:cancel', { retweetId: action.retweet });
+          break;
         default:
           return true;
       }

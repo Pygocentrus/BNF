@@ -82,7 +82,7 @@ class TweetsRowComponent extends Component {
   }
 
   _handleCancel() {
-    BnfQueueActions.cancelDisplay(this.props.rtId);
+    BnfQueueActions.cancelDisplay({ retweet: this.props.rtId });
   }
 
   _actionsLive() {
