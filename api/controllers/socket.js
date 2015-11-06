@@ -1,40 +1,86 @@
-class SocketManager {
+// Controllers
+import DailyTweetsCtrl from './dailyTweets';
+import LivestreamCtrl from './liveStream';
+import BnfQueueCtrl from './bnfQueue';
 
-  contructor(socketServer) {
-    console.log('Hello motherfucker');
-    
-    this.io = socketServer;
+let SocketManager = {
 
-    // this.io.on('connexion', this._handleConnexion.bind(this));
-    this.io.on('connexion', (socket) => {
-      console.log('Suprise!', socket);
-    });
-  }
-
-  _handleConnexion(socket) {
-    var _this = this;
-
-    console.log(this);
-
-    // New client connected
-    this.io.emit('test', { foo: 'great' });
-
+  handleClient(socket, io, twitterWorker) {
+    // Dashboard all tweets
     socket.on('dashboard:daily-tweets:all', () => {
-  		_this.io.emit('dashboard:daily-tweets:all', { answer: 'all!' });
-  	});
+      DailyTweetsCtrl.getDailyTweets((err, dailyTweets) => {
+        io.emit('dashboard:daily-tweets:all', { dailyTweets: dailyTweets, err: err });
+      });
+    });
 
-  	socket.on('dashboard:daily-tweets:new', () => {
-			_this.io.emit('dashboard:daily-tweets:new', { answer: 'new!' });
-  	});
+    // New daily tweet added
+    socket.on('dashboard:daily-tweets:new', (tweet) => {
+      DailyTweetsCtrl.postDailyTweet(tweet, (err, newTweet) => {
+        io.emit('dashboard:daily-tweets:new', { tweet: newTweet, err: err });
+      });
+    });
 
-  	socket.on('dashboard:daily-tweets:remove', () => {
-			_this.io.emit('dashboard:daily-tweets:remove', { answer: 'removed!' });
-  	});
-  }
+    // Remove daily tweet
+    socket.on('dashboard:daily-tweets:remove', () => {
+      io.emit('dashboard:daily-tweets:remove', { answer: 'removed!' });
+    });
 
-  _sendDailyTweets() {
-    this.socketServer.emit('dashboard:daily-tweets:all', { answer: 'all!' });
-  }
+    // Get all rewteets in the /live
+    socket.on('livestream:retweets:all', () => {
+      LivestreamCtrl.getReTweets((err, retweets) => {
+        io.emit('livestream:retweets:all', { retweets: retweets, err: err });
+      });
+    });
+
+    // Get 50 tweets from the livestream
+    socket.on('livestream:retweets:more', (options) => {
+      options = options || {};
+      LivestreamCtrl.getMoreTweets(options, (err, retweets) => {
+        io.emit('livestream:retweets:more', { retweets: retweets, err: err });
+      });
+    });
+
+    // Toggle play/pause, e.g whether we should listen to the stream API
+    socket.on('livestream:retweets:toggle:playpause', (data) => {
+      twitterWorker.setPauseState(data.state === 'paused');
+    });
+
+    // Validate a retweet
+    socket.on('livestream:retweets:validate', (retweet) => {
+      let options = { hasBeenValidated: true, isValid: true };
+
+      LivestreamCtrl.updateReTweet(retweet, options, (err, rt) => {
+        if (!err) {
+          io.emit('livestream:retweets:validate', { retweet: rt, err: err });
+        }
+      });
+    });
+
+    // Reject a retweet
+    socket.on('livestream:retweets:reject', (retweet) => {
+      let options = { hasBeenValidated: true, isValid: false };
+
+      LivestreamCtrl.updateReTweet(retweet, options, (err, rt) => {
+        if (!err) {
+          io.emit('livestream:retweets:reject', { retweet: rt, err: err });
+        }
+      });
+    });
+
+    // Ask for all validated retweets in the display queue
+    socket.on('queue:retweets:all', () => {
+      BnfQueueCtrl.getQueueReTweets((err, retweets) => {
+        io.emit('queue:retweets:all', { retweets: retweets, err: err });
+      });
+    });
+
+    // Cancel an enqueued tweet
+    socket.on('queue:retweets:cancel', (data) => {
+      BnfQueueCtrl.cancelQueueReTweet(data.retweetId, (err, tweet) => {
+        io.emit('queue:retweets:cancel', { retweet: tweet, err: err });
+      });
+    });
+  },
 
 };
 
