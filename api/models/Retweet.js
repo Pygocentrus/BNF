@@ -12,10 +12,12 @@ let Rewteet = new Schema({
   name: String,
   location: String,
   photo: String,
+  bnfPhoto: String,
   followers: { type: Number, default: 0},
   isValid: { type: Boolean, default: false },
   hasBeenValidated: { type: Boolean, default: false },
   hasBeenDisplayed: { type: Boolean, default: false },
+  hasBeenReplied: { type: Boolean, default: false },
   date: { type: Date, default: Date.now }
 });
 

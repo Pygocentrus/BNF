@@ -20,8 +20,6 @@ let worker = {
       access_token_secret: Conf.twitterApi.access_token_secret
     });
 
-    // FIXME: change track's #xxxxx with #WildTouchExpeditions
-    // let stream = T.stream('statuses/filter', { track: '#Antarctica' });
     let stream = T.stream('statuses/filter', { track: Conf.twitterApi.account });
 
     // Each time we get a new tweet, we handle it

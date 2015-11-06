@@ -31,22 +31,23 @@ class LiveComponent extends React.Component {
 
     this._onChange = this._onChange.bind(this);
     this._loadMorePosts = this._loadMorePosts.bind(this);
-  }
-
-  componentWillMount() {
-    let liveTweets = {
-      retweetsListOffset: Conf.liveTweetOffset,
-      liveTweets: []
-    };
-
-    this.setState(liveTweets);
+    this._resetData = this._resetData.bind(this);
 
     // Fetch oldest elements with offset
     socket.emit('livestream:retweets:more');
+  }
+
+  componentWillMount() {
+    this._resetData();
 
     // Display them when we get them back
     socket.on('livestream:retweets:more', (retweets) => {
       LivestreamActions.moreRetweets({ liveTweets: retweets });
+
+      // Update the offset
+      this.setState({
+        retweetsListOffset: this.state.retweetsListOffset + Conf.liveTweetOffset
+      });
     });
   }
 
@@ -106,15 +107,21 @@ class LiveComponent extends React.Component {
 
   }
 
+  _resetData() {
+    let liveTweets = {
+      retweetsListOffset: Conf.liveTweetOffset,
+      liveTweets: []
+    };
+
+    this.setState(liveTweets);
+  }
+
   _onChange() {
     this.setState(getRewteetsState());
   }
 
   _loadMorePosts() {
     socket.emit('livestream:retweets:more', { offset: this.state.retweetsListOffset });
-    this.setState({
-      retweetsListOffset: this.state.retweetsListOffset + Conf.liveTweetOffset
-    });
   }
 
 }
