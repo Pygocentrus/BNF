@@ -67,7 +67,6 @@ class QueueComponent extends React.Component {
     // Remove listeners on route change, preventing double bindings
     BnfQueueStore.removeChangeListener(this._onChange);
     socket.removeAllListeners('queue:retweets:all');
-    // socket.removeAllListeners('queue:retweets:new');
   }
 
   render() {
@@ -77,7 +76,7 @@ class QueueComponent extends React.Component {
         {/* Header */}
         <Jumbotron>
           <PageHeader>
-            File d'attente
+            File d'attente <small>({ this.state.bnfQueueTweets.length } éléments)</small>
           </PageHeader>
           <p>Tweets validés en attente d'affichage sur la BNF</p>
         </Jumbotron>
