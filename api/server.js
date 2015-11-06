@@ -6,13 +6,11 @@ import cliArgs from 'yargs';
 import bodyParser from 'body-parser';
 import socketIo from 'socket.io';
 import mongoose from 'mongoose';
-import _ from 'lodash';
-
 import Twit from 'twit';
+import _ from 'lodash';
 
 // Modules
 import Conf from './conf';
-import Api from './routers';
 import SocketManager from './controllers/socket';
 
 // Controllers
@@ -74,8 +72,6 @@ let App = {
     // Socket transport mode
     io.set('transports', ['polling', 'websocket']);
 
-    // API Routes
-    // app.use('/api', Api);
     // Default route serving the view otherwise
     app.get(indexRoutes, (req, res) => res.render('index'));
 
