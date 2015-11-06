@@ -21,6 +21,10 @@ function getAllRewteets() {
   return _retweets;
 }
 
+function loadMore(tweets) {
+  _retweets.push(...tweets);
+}
+
 function rewteetCounter() {
   return _retweets.length;
 }
@@ -47,6 +51,10 @@ let LiveStreamStore = _.merge(EventEmitter.prototype, {
   // Returns all the retweets
   getAllRewteets() {
     return _retweets;
+  },
+
+  loadMore(tweets) {
+    loadMore(tweets);
   },
 
   rewteetCounter() {
@@ -79,6 +87,9 @@ AppDispatcher.register((payload) => {
   switch(action.actionType) {
     case LivestreamConstants.LIVESTREAM_RETWEETS_ALL:
       loadRetweets(action.retweets);
+      break;
+    case LivestreamConstants.LIVESTREAM_RETWEETS_MORE:
+      loadMore(action.retweets);
       break;
     case LivestreamConstants.LIVESTREAM_RETWEETS_NEW:
       addRetweet(action.retweet);
