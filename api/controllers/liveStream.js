@@ -21,6 +21,35 @@ let livestreamCtrl = {
       });
   },
 
+  getMoreTweets: function(options = {}, cb) {
+    if (!options.offset) {
+      Retweet
+        .find({ hasBeenValidated: false })
+        .sort({ date: 'asc' })
+        .limit(Conf.vars.liveTweetOffset)
+        .exec((err, retweets) => {
+          if (err || !retweets) {
+            cb.call(this, err, null);
+          } else {
+            cb.call(this, null, retweets);
+          }
+        });
+    } else {
+      Retweet
+        .find({ hasBeenValidated: false })
+        .sort({ date: 'asc' })
+        .skip(options.offset)
+        .limit(25)
+        .exec((err, retweets) => {
+          if (err || !retweets) {
+            cb.call(this, err, null);
+          } else {
+            cb.call(this, null, retweets);
+          }
+        });
+    }
+  },
+
   updateReTweet: function(rt, options, cb) {
     // Find the tweet to update
     Retweet.findOne({ rtId: rt.retweet }, (err, retweet) => {

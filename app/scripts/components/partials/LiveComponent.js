@@ -30,23 +30,23 @@ class LiveComponent extends React.Component {
     super(props);
 
     this._onChange = this._onChange.bind(this);
-    this._togglePlayPause = this._togglePlayPause.bind(this);
+    this._loadMorePosts = this._loadMorePosts.bind(this);
   }
 
   componentWillMount() {
     let liveTweets = {
+      retweetsListOffset: Conf.liveTweetOffset,
       liveTweets: []
     };
 
     this.setState(liveTweets);
 
-    socket.emit('livestream:retweets:all');
-    socket.on('livestream:retweets:all', (retweets) => {
-      LivestreamActions.getAllRetweets({ liveTweets: retweets });
-    });
+    // Fetch oldest elements with offset
+    socket.emit('livestream:retweets:more');
 
-    socket.on('live:tweets:new', (retweet) => {
-      LivestreamActions.newRetweet({ retweet: retweet.tweet });
+    // Display them when we get them back
+    socket.on('livestream:retweets:more', (retweets) => {
+      LivestreamActions.moreRetweets({ liveTweets: retweets });
     });
   }
 
@@ -75,6 +75,7 @@ class LiveComponent extends React.Component {
   componentWillUnmount() {
     // Remove listeners on route change, preventing double bindings
     LiveStreamStore.removeChangeListener(this._onChange);
+    socket.removeAllListeners('livestream:retweets:more');
     socket.removeAllListeners('livestream:retweets:all');
     socket.removeAllListeners('live:tweets:new');
   }
@@ -90,7 +91,11 @@ class LiveComponent extends React.Component {
             <br />
             <small>({ this.state.liveTweets.length } éléments)</small>
             <br />
-            <Button ref="pauseBtn" bsStyle="warning" onClick={ this._togglePlayPause }>Pause</Button>
+            <Button
+              ref="loadMorePosts"
+              bsStyle="primary"
+              bsSize="large"
+              onClick={ this._loadMorePosts }>Charger d'autres RT</Button>
           </PageHeader>
         </Jumbotron>
 
@@ -105,14 +110,11 @@ class LiveComponent extends React.Component {
     this.setState(getRewteetsState());
   }
 
-  _togglePlayPause() {
-    let btn = ReactDOM.findDOMNode(this.refs.pauseBtn);
-    btn.innerHTML = btn.innerHTML === 'Pause' ? 'Reprendre' : 'Pause';
-
-    socket.emit(
-      'livestream:retweets:toggle:playpause',
-      { state: btn.innerHTML === 'Reprendre' ? 'paused' : 'running' }
-    );
+  _loadMorePosts() {
+    socket.emit('livestream:retweets:more', { offset: this.state.retweetsListOffset });
+    this.setState({
+      retweetsListOffset: this.state.retweetsListOffset + Conf.liveTweetOffset
+    });
   }
 
 }

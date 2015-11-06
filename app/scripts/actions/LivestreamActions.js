@@ -11,6 +11,13 @@ var LivestreamActions = {
     });
   },
 
+  moreRetweets: function(data) {
+    AppDispatcher.handleViewAction({
+      actionType: LivestreamConstants.LIVESTREAM_RETWEETS_MORE,
+      retweets: data.liveTweets.retweets
+    });
+  },
+
   counterUpdate: function(data) {
     AppDispatcher.handleViewAction({
       actionType: LivestreamConstants.LIVESTREAM_RETWEETS_COUNTER,
