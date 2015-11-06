@@ -6,6 +6,7 @@ import cliArgs from 'yargs';
 import bodyParser from 'body-parser';
 import socketIo from 'socket.io';
 import mongoose from 'mongoose';
+import _ from 'lodash';
 
 import Twit from 'twit';
 
@@ -64,11 +65,6 @@ let App = {
       next();
     });
 
-    // API Routes
-    // app.use('/api', Api);
-    // Default route serving the view otherwise
-    app.get(indexRoutes, (req, res) => res.render('index'));
-
     // Start app
     server.listen(port, () => console.log('Listening on port ' + port + '...'));
 
@@ -77,6 +73,22 @@ let App = {
 
     // Socket transport mode
     io.set('transports', ['polling', 'websocket']);
+
+    // API Routes
+    // app.use('/api', Api);
+    // Default route serving the view otherwise
+    app.get(indexRoutes, (req, res) => res.render('index'));
+
+    // Open API for the BNF
+    app.get('/api/item.(json|txt)', (req, res) => {
+      BnfQueueCtrl.getNextQueueItem(io, (err, latestQueueItem) => {
+        if (_.endsWith(req.url, 'txt')) {
+          res.send(latestQueueItem.username);
+        } else {
+          res.json(latestQueueItem);
+        }
+      });
+    });
 
     // Start the Twitter worker
     twitterWorker.start(io);
