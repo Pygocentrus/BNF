@@ -1,5 +1,6 @@
 // Packages
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { Button, Jumbotron, PageHeader } from 'react-bootstrap';
 import io from 'socket.io-client';
 
@@ -29,6 +30,7 @@ class LiveComponent extends React.Component {
     super(props);
 
     this._onChange = this._onChange.bind(this);
+    this._togglePlayPause = this._togglePlayPause.bind(this);
   }
 
   componentWillMount() {
@@ -84,7 +86,9 @@ class LiveComponent extends React.Component {
         {/* Intro header */}
         <Jumbotron>
           <PageHeader>
-            Livestream Twitter
+            Livestream Twitter @{ Conf.twitterAccount }
+            <br />
+            <Button ref="pauseBtn" bsStyle="warning" onClick={ this._togglePlayPause }>Pause</Button>
           </PageHeader>
         </Jumbotron>
 
@@ -97,6 +101,16 @@ class LiveComponent extends React.Component {
 
   _onChange() {
     this.setState(getRewteetsState());
+  }
+
+  _togglePlayPause() {
+    let btn = ReactDOM.findDOMNode(this.refs.pauseBtn);
+    btn.innerHTML = btn.innerHTML === 'Pause' ? 'Reprendre' : 'Pause';
+
+    socket.emit(
+      'livestream:retweets:toggle:playpause',
+      { state: btn.innerHTML === 'Reprendre' ? 'paused' : 'running' }
+    );
   }
 
 }
