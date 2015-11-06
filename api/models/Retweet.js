@@ -19,4 +19,19 @@ let Rewteet = new Schema({
   date: { type: Date, default: Date.now }
 });
 
+Rewteet.statics.randomDisplayed = function(callback) {
+  this.count({ isValid: true, hasBeenValidated: true, hasBeenDisplayed: true }, function(err, count) {
+    if (err) {
+      return callback(err);
+    }
+
+    var rand = Math.floor(Math.random() * count);
+
+    this.findOne({ isValid: true, hasBeenValidated: true, hasBeenDisplayed: true })
+      .skip(rand)
+      .exec(callback);
+
+  }.bind(this));
+};
+
 export default mongoose.model('Rewteet', Rewteet);

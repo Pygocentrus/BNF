@@ -88,6 +88,8 @@ class LiveComponent extends React.Component {
           <PageHeader>
             Livestream Twitter @{ Conf.twitterAccount }
             <br />
+            <small>({ this.state.liveTweets.length } éléments)</small>
+            <br />
             <Button ref="pauseBtn" bsStyle="warning" onClick={ this._togglePlayPause }>Pause</Button>
           </PageHeader>
         </Jumbotron>

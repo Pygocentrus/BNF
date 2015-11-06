@@ -85,6 +85,9 @@ AppDispatcher.register((payload) => {
     case BnfQueueConstants.BNF_QUEUE_CANCEL_DISPLAY:
       removeRetweet(action.retweet);
       break;
+    case BnfQueueConstants.BNF_QUEUE_DISPLAYED:
+      removeRetweet(action.tweet.rtId);
+      break;
     default:
       return true;
   }

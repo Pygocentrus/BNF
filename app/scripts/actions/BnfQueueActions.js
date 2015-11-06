@@ -25,6 +25,13 @@ var BnfQueueActions = {
     });
   },
 
+  displayed: function(tweet) {
+    AppDispatcher.handleViewAction({
+      actionType: BnfQueueConstants.BNF_QUEUE_DISPLAYED,
+      tweet: tweet
+    });
+  },
+
 };
 
 export default BnfQueueActions;

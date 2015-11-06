@@ -38,9 +38,17 @@ class QueueComponent extends React.Component {
 
     this.setState(bnfQueueTweets);
 
+    // Fetch all elements within display queue
     socket.emit('queue:retweets:all');
+
+    // When we grabed all the elements
     socket.on('queue:retweets:all', (retweets) => {
       BnfQueueActions.getAllBnfRetweets({ bnfQueueTweets: retweets });
+    });
+
+    // When one of them has been displayed on the BNF
+    socket.on('queue:retweets:displayed', (data) => {
+      BnfQueueActions.displayed(data.tweet);
     });
   }
 
