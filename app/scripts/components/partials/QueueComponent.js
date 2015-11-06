@@ -11,7 +11,7 @@ import BnfQueueActions from '../../actions/BnfQueueActions';
 import BnfQueueConstants from '../../constants/BnfQueueConstants';
 
 // Components
-import BnfQueueTabComponent from './queue/BnfQueueTabComponent';
+import LiveTweets from './live/TweetsTabComponent';
 
 // Socket io Instance
 let socket = io.connect(Conf.socketHost);
@@ -87,7 +87,7 @@ class QueueComponent extends React.Component {
         </Jumbotron>
 
         {/* Tweets tab */}
-        <BnfQueueTabComponent bnfQueueTweets={ this.state.bnfQueueTweets }/>
+        <LiveTweets liveTweets={ this.state.bnfQueueTweets } actionsType="queue"/>
       </section>
     );
 

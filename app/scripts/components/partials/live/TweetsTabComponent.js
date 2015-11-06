@@ -26,6 +26,7 @@ class TweetsTabComponent extends Component {
       return (
         <TweetRow
           key={ Utils.generateUniqueKey(tweet.rtId) }
+          actionsType={ this.props.actionsType }
           photo={ tweet.photo }
           username={ tweet.username }
           name={ tweet.name }

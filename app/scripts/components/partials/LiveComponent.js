@@ -93,7 +93,7 @@ class LiveComponent extends React.Component {
         </Jumbotron>
 
         {/* Tweets tab */}
-        <LiveTweets liveTweets={ this.state.liveTweets }/>
+        <LiveTweets liveTweets={ this.state.liveTweets } actionsType="live"/>
       </section>
     );
 
