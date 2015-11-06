@@ -29,6 +29,7 @@ let App = {
     // App bootstraping
     let app = express();
     let server = http.Server(app);
+    let isPaused = false;
     let io, sm;
 
     // App conf according to ENV
@@ -78,7 +79,7 @@ let App = {
     io.set('transports', ['polling', 'websocket']);
 
     // Start the Twitter worker
-    twitterWorker(io);
+    twitterWorker.start(io);
 
     // New client connected
     io.on('connection', (socket) => {
@@ -97,6 +98,10 @@ let App = {
     	socket.on('dashboard:daily-tweets:remove', () => {
 				io.emit('dashboard:daily-tweets:remove', { answer: 'removed!' });
     	});
+
+      socket.on('livestream:retweets:toggle:playpause', (data) => {
+        twitterWorker.setPauseState(data.state === 'paused');
+      });
 
       socket.on('livestream:retweets:all', () => {
         LivestreamCtrl.getReTweets((err, retweets) => {
