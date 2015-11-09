@@ -1,5 +1,7 @@
 // NPM
 import mongoose from 'mongoose';
+import Twit from 'twit';
+import _ from 'lodash';
 
 // Modules
 import Conf from '../conf';
@@ -14,17 +16,17 @@ class TweetHandler {
 
   manage(tweet) {
     if (this.isNotMainAccountTweet(tweet) && this.isRetweet(tweet)) {
+
       let reTweetId = tweet.id_str.replace(/\'/g, "");
       let originalTweetId = tweet.retweeted_status.id_str.replace(/\'/g, "");
 
       this.checkOneOfDailyTweet(tweet, (err, matchingDailyTweets, tweet) => {
         if (!err && matchingDailyTweets.length) {
 
-          console.log(tweet.user.screen_name, tweet.text);
-
           let rt = new Retweet();
           rt.tweetId = Date.now();
           rt.rtId = reTweetId;
+          rt.rtIdStr = tweet.id_str;
           rt.originalTweetId = originalTweetId;
           rt.username = tweet.user.screen_name;
           rt.name = tweet.user.name;
@@ -35,6 +37,7 @@ class TweetHandler {
 
           rt.save((err, retweet) => {
             if (!err && retweet) {
+              console.log('New RT: ', retweet.username);
               // Broadcast the new tweet
               this.broadcast(retweet);
             }
@@ -49,7 +52,7 @@ class TweetHandler {
   }
 
   isRetweet(tweet) {
-    return !!tweet.retweeted_status;
+    return typeof tweet.retweeted_status !== 'undefined';
   }
 
   checkOneOfDailyTweet(tweet, cb) {
@@ -59,6 +62,25 @@ class TweetHandler {
     DailyTweet.find({ link: new RegExp('^' + link + '/?$', 'i') }, (err, rt) => {
       cb(err, rt, tweet);
     });
+  }
+
+  answerBackToRewteet(retweet) {
+    console.log('\tLets answer to ', retweet.username);
+
+    let T = new Twit({
+      consumer_key: Conf.twitterApi.consumer_key,
+      consumer_secret: Conf.twitterApi.consumer_secret,
+      access_token: Conf.twitterApi.access_token,
+      access_token_secret: Conf.twitterApi.access_token_secret
+    });
+
+    // TODO: Answer to the retweet
+    // T.post('statuses/update', {
+    //   in_reply_to_status_id_str: retweet.rtIdStr,
+    //   status: 'Great, thanks a lot!'
+    // }, function (err, data, response) {
+    //   console.log(err, data, response)
+    // });
   }
 
   broadcast(tweet) {

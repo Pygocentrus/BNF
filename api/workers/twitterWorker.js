@@ -5,7 +5,7 @@ import Twit from 'twit';
 import Conf from '../conf';
 import TweetHandler from '../services/tweetHandler';
 
-let worker = {
+let TwitterWorker = {
 
   start(io) {
     let tweetHandler = new TweetHandler(io);
@@ -36,4 +36,4 @@ let worker = {
 
 }
 
-export default worker;
+export default TwitterWorker;

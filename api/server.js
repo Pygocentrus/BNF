@@ -18,6 +18,7 @@ import BnfQueueCtrl from './controllers/bnfQueue';
 
 // Workers
 import twitterWorker from './workers/twitterWorker';
+import awsWorker from './workers/awsWorker';
 
 let App = {
 
@@ -77,17 +78,20 @@ let App = {
     app.get('/api/item.(json|txt)', (req, res) => {
       BnfQueueCtrl.getNextQueueItem(io, (err, latestQueueItem) => {
         if (_.endsWith(req.url, 'txt')) {
-          res.send(latestQueueItem.username);
+          // Send simple txt with `@username`
+          res.send(`@${latestQueueItem.username}`);
         } else {
+          // Send full json
           res.json(latestQueueItem);
         }
       });
     });
 
-    // Start the Twitter worker
+    // Start the Twitter & AWS cron workers
     twitterWorker.start(io);
+    awsWorker.start(io);
 
-    // New client connected
+    // New client connected through sockets
     io.on('connection', (socket) => {
       SocketManager.handleClient(socket, io, twitterWorker);
     });
