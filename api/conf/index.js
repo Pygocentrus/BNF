@@ -10,7 +10,8 @@ let Conf = {
     prod: '',
   },
   twitterApi: {
-    account: 'justinbieber',
+    account: 'FoxNews',
+    tag: 'FoxNews',
     accountId: '',
     consumer_key: 'hqRgWDRUaKmgUTAoaHw40n7VN',
     consumer_secret: '6A8ARe38WP29uU2KNCHqi485e61DOrMAXnanJHoTjTmlBZpBr6',

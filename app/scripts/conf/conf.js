@@ -1,6 +1,6 @@
 let Conf = new (function() {
   this.env = 'dev';
-  this.twitterAccount = 'justinbieber';
+  this.twitterAccount = 'FoxNews';
   this.devBase = 'http://localhost:3000';
   this.socketHost = this.env === 'prod' ? window.location.origin : this.devBase;
   this.liveTweetOffset = 25;

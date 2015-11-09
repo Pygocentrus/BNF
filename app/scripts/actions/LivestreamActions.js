@@ -32,6 +32,13 @@ var LivestreamActions = {
     });
   },
 
+  removeRetweets: function(data) {
+    AppDispatcher.handleViewAction({
+      actionType: LivestreamConstants.LIVESTREAM_RETWEETS_CLEAR,
+      data: []
+    });
+  },
+
   rejectRetweet: function(tweetId) {
     AppDispatcher.handleViewAction({
       actionType: LivestreamConstants.LIVESTREAM_RETWEETS_REJECT,

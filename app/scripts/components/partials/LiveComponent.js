@@ -79,6 +79,10 @@ class LiveComponent extends React.Component {
     socket.removeAllListeners('livestream:retweets:more');
     socket.removeAllListeners('livestream:retweets:all');
     socket.removeAllListeners('live:tweets:new');
+
+    // Clear all retweets, teardrop to avoid double tweets
+    // when coming back to the page later
+    LivestreamActions.removeRetweets();
   }
 
   render() {
