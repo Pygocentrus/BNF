@@ -39,7 +39,7 @@ let livestreamCtrl = {
         .find({ hasBeenValidated: false })
         .sort({ date: 'asc' })
         .skip(options.offset)
-        .limit(25)
+        .limit(Conf.vars.liveTweetOffset)
         .exec((err, retweets) => {
           if (err || !retweets) {
             cb.call(this, err, null);

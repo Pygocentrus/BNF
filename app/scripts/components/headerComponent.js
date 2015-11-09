@@ -49,10 +49,10 @@ class HeaderComponent extends React.Component {
                 </NavItem>
               </LinkContainer>
               <NavDropdown eventKey={4} title="Tweets" id="collapsible-navbar-dropdown">
-                <LinkContainer to="/validated">
+                <LinkContainer to="/displayed">
                   <NavItem eventKey={5} href="#">
                     <Glyphicon glyph="ok" />&nbsp;
-                    Validés
+                    Affichés
                   </NavItem>
                 </LinkContainer>
                 <LinkContainer to="/rejected">

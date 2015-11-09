@@ -14,8 +14,6 @@ import Conf from './conf';
 import SocketManager from './controllers/socket';
 
 // Controllers
-import DailyTweetsCtrl from './controllers/dailyTweets';
-import LivestreamCtrl from './controllers/liveStream';
 import BnfQueueCtrl from './controllers/bnfQueue';
 
 // Workers
@@ -42,7 +40,7 @@ let App = {
 
     // Front reserved routes that are
     // being rerouted towards index
-    let indexRoutes = ['/', '/dashboard', '/live', '/queue', '/validated', '/rejected'];
+    let indexRoutes = ['/', '/dashboard', '/live', '/queue', '/displayed', '/rejected'];
 
     // Body parser
     app.use(bodyParser.json());

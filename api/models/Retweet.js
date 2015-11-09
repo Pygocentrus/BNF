@@ -13,12 +13,13 @@ let Rewteet = new Schema({
   location: String,
   photo: String,
   bnfPhoto: String,
-  followers: { type: Number, default: 0},
+  followers: { type: Number, default: 0 },
   isValid: { type: Boolean, default: false },
   hasBeenValidated: { type: Boolean, default: false },
   hasBeenDisplayed: { type: Boolean, default: false },
   hasBeenReplied: { type: Boolean, default: false },
-  date: { type: Date, default: Date.now }
+  date: { type: Date, default: Date.now },
+  displayDate: { type: Date, default: null },
 });
 
 Rewteet.statics.randomDisplayed = function(callback) {

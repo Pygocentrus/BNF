@@ -46,13 +46,17 @@ let BnfQueueCtrl = {
           // If we have one, let's update its status
           // to hasBeenDisplayed
           rt.hasBeenDisplayed = true;
+          rt.displayDate = new Date();
 
           rt.save((err, updatedRt) => {
             if (err || !updatedRt) {
               io.sockets.emit('queue:retweets:displayed', { tweet: rt });
               cb.call(this, null, rt);
             } else {
+              // Update the queue
               io.sockets.emit('queue:retweets:displayed', { tweet: updatedRt });
+              // Update the displayed section
+              io.sockets.emit('displayed:retweets:new', { tweet: updatedRt });
               cb.call(this, null, updatedRt);
             }
           });
