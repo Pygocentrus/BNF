@@ -22,6 +22,28 @@ let BnfQueueCtrl = {
       });
   },
 
+  getQueueReTweetsPromise: function() {
+    // Find displayed retweets that
+    // doesn't have a valid BNF photo yet
+    return new Promise((resolve, reject) => {
+      Retweet
+        .find({
+          isValid: true,
+          hasBeenValidated: true,
+          hasBeenDisplayed: true,
+          bnfPhoto: null
+        })
+        .sort({ date: 'asc' })
+        .exec((err, retweets) => {
+          if (err || !retweets) {
+            reject(err);
+          } else {
+            resolve(retweets);
+          }
+        });
+    });
+  },
+
   getNextQueueItem: function(io, cb) {
     // Find the next item in the queue
     Retweet

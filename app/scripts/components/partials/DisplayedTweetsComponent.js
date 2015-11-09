@@ -46,8 +46,7 @@ class DisplayedTweetsComponent extends React.Component {
     });
 
     socket.on('displayed:retweets:new', (retweet) => {
-      console.log('New!', retweet);
-      DisplayedActions.addDisplayedTweet(rewteet);
+      DisplayedActions.addDisplayedTweet(retweet);
     });
   }
 
@@ -60,6 +59,7 @@ class DisplayedTweetsComponent extends React.Component {
     // Remove listeners on route change, preventing double bindings
     DisplayedStore.removeChangeListener(this._onChange);
     socket.removeAllListeners('displayed:retweets:all');
+    socket.removeAllListeners('displayed:retweets:new');
   }
 
   render() {
