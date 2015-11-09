@@ -17,7 +17,7 @@ let _retweets = [];
 // Socket io Instance
 let socket = io.connect(Conf.socketHost);
 
-function getAllRewteets() {
+function getDisplayedRewteets() {
   return _retweets;
 }
 
@@ -53,8 +53,8 @@ let LiveStreamStore = _.merge(EventEmitter.prototype, {
   },
 
   // Returns all the retweets
-  getAllRewteets() {
-    return _retweets;
+  getDisplayedRewteets() {
+    return getDisplayedRewteets();
   },
 
   loadMore(tweets) {

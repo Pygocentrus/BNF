@@ -36,6 +36,9 @@ class TweetsRowComponent extends Component {
       case 'queue':
         btn = this._actionsQueue();
         break;
+      case 'displayed':
+        btn = this._displayedActions();
+        break;
       case 'live':
       default:
         btn = this._actionsLive();
@@ -112,6 +115,12 @@ class TweetsRowComponent extends Component {
           Annuler
         </Button>
       </td>
+    );
+  }
+
+  _displayedActions() {
+    return (
+      <td>–</td>
     );
   }
 

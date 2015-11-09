@@ -8,7 +8,7 @@ import AppComponent from '../components/AppComponent';
 import MainComponent from '../components/partials/MainComponent';
 import LiveComponent from '../components/partials/LiveComponent';
 import QueueComponent from '../components/partials/QueueComponent';
-import ValidatedTweetsComponent from '../components/partials/ValidatedTweetsComponent';
+import DisplayedTweetsComponent from '../components/partials/DisplayedTweetsComponent';
 import RejectedTweetsComponent from '../components/partials/RejectedTweetsComponent';
 import NotFoundComponent from '../components/partials/NotFoundComponent';
 
@@ -21,7 +21,7 @@ let Routes = (
       <Route path="dashboard" component={MainComponent} />
       <Route path="live" component={LiveComponent} />
       <Route path="queue" component={QueueComponent} />
-      <Route path="validated" component={ValidatedTweetsComponent} />
+      <Route path="displayed" component={DisplayedTweetsComponent} />
       <Route path="rejected" component={RejectedTweetsComponent} />
       <Route path="*" component={NotFoundComponent}/>
     </Route>

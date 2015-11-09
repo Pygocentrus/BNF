@@ -20,7 +20,7 @@ let socket = io.connect(Conf.socketHost);
 // retweets update from the store
 let getRewteetsState = () => {
   return {
-    liveTweets: LiveStreamStore.getAllRewteets()
+    liveTweets: LiveStreamStore.getDisplayedRewteets()
   };
 };
 
@@ -34,7 +34,7 @@ class LiveComponent extends React.Component {
     this._resetData = this._resetData.bind(this);
 
     // Fetch oldest elements with offset
-    socket.emit('livestream:retweets:more');
+    socket.emit('livestream:retweets:more', { offset: 0 });
   }
 
   componentWillMount() {
@@ -43,11 +43,6 @@ class LiveComponent extends React.Component {
     // Display them when we get them back
     socket.on('livestream:retweets:more', (retweets) => {
       LivestreamActions.moreRetweets({ liveTweets: retweets });
-
-      // Update the offset
-      this.setState({
-        retweetsListOffset: this.state.retweetsListOffset + Conf.liveTweetOffset
-      });
     });
   }
 
@@ -113,7 +108,6 @@ class LiveComponent extends React.Component {
 
   _resetData() {
     let liveTweets = {
-      retweetsListOffset: Conf.liveTweetOffset,
       liveTweets: []
     };
 
@@ -125,7 +119,7 @@ class LiveComponent extends React.Component {
   }
 
   _loadMorePosts() {
-    socket.emit('livestream:retweets:more', { offset: this.state.retweetsListOffset });
+    socket.emit('livestream:retweets:more', { offset: this.state.liveTweets.length });
   }
 
 }

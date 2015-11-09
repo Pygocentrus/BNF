@@ -2,6 +2,8 @@
 import DailyTweetsCtrl from './dailyTweets';
 import LivestreamCtrl from './liveStream';
 import BnfQueueCtrl from './bnfQueue';
+import DisplayedCtrl from './displayed';
+import RejectedCtrl from './rejected';
 
 let SocketManager = {
 
@@ -78,6 +80,20 @@ let SocketManager = {
     socket.on('queue:retweets:cancel', (data) => {
       BnfQueueCtrl.cancelQueueReTweet(data.retweetId, (err, tweet) => {
         io.emit('queue:retweets:cancel', { retweet: tweet, err: err });
+      });
+    });
+
+    // Get all displayed tweets
+    socket.on('displayed:retweets:all', () => {
+      DisplayedCtrl.getDisplayedTweets((err, retweets) => {
+        io.emit('displayed:retweets:all', { retweets: retweets, err: err });
+      });
+    });
+
+    // Get all rejected tweets
+    socket.on('rejected:retweets:all', () => {
+      RejectedCtrl.getRejectedTweets((err, retweets) => {
+        io.emit('rejected:retweets:all', { retweets: retweets, err: err });
       });
     });
   },
