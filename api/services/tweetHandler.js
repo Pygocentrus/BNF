@@ -20,6 +20,8 @@ class TweetHandler {
       this.checkOneOfDailyTweet(tweet, (err, matchingDailyTweets, tweet) => {
         if (!err && matchingDailyTweets.length) {
 
+          console.log(tweet.user.screen_name, tweet.text);
+
           let rt = new Retweet();
           rt.tweetId = Date.now();
           rt.rtId = reTweetId;

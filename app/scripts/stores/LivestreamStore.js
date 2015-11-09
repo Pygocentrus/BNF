@@ -37,6 +37,10 @@ function removeRetweet(retweet) {
   _retweets = _retweets.filter((rt) => rt.rtId !== retweet);
 }
 
+function removeRetweets() {
+  _retweets = [];
+}
+
 function addRetweet(retweet) {
   _retweets.push(retweet);
 }
@@ -63,6 +67,10 @@ let LiveStreamStore = _.merge(EventEmitter.prototype, {
 
   removeRetweet(retweet) {
     removeRetweet(rewteet);
+  },
+
+  removeRetweets() {
+    removeRetweets();
   },
 
   emitChange() {
@@ -96,6 +104,9 @@ AppDispatcher.register((payload) => {
       break;
     case LivestreamConstants.LIVESTREAM_RETWEETS_DELETE:
       removeRetweet(action.retweet);
+      break;
+    case LivestreamConstants.LIVESTREAM_RETWEETS_CLEAR:
+      removeRetweets();
       break;
     case LivestreamConstants.LIVESTREAM_RETWEETS_REJECT:
       removeRetweet(action.retweet);
