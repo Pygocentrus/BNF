@@ -1,4 +1,6 @@
-import mongoose from 'mongoose';
+'use strict';
+
+var mongoose = require('mongoose');
 
 let Schema = mongoose.Schema;
 
@@ -9,4 +11,4 @@ let DailyTweet = new Schema({
   date: { type: Date, default: Date.now }
 });
 
-export default mongoose.model('DailyTweet', DailyTweet);
+module.exports = mongoose.model('DailyTweet', DailyTweet);

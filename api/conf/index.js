@@ -1,3 +1,5 @@
+'use strict';
+
 let Conf = {
   ports: {
     dev: 3000,
@@ -32,4 +34,4 @@ let Conf = {
   },
 };
 
-export default Conf;
+module.exports = Conf;

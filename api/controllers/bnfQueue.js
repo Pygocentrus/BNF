@@ -1,10 +1,11 @@
-import mongoose from 'mongoose';
-import { argv } from 'yargs';
-import _ from 'lodash';
+'use strict';
+
+var mongoose = require('mongoose'),
+    _        = require('lodash');
 
 // Modules
-import Retweet from '../models/Retweet';
-import Conf from '../conf';
+var Retweet  = require('../models/Retweet'),
+    Conf     = require('../conf');
 
 let BnfQueueCtrl = {
 
@@ -111,4 +112,4 @@ let BnfQueueCtrl = {
 
 };
 
-export default BnfQueueCtrl;
+module.exports = BnfQueueCtrl;

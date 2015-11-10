@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": ">=0.12"
+  },
   "scripts": {
     "start": "node --harmony index.js",
     "deps": "echo \"Fetching dependencies...\" && npm i && bower i",

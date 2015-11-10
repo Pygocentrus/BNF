@@ -1,28 +1,30 @@
+'use strict';
+
 // NPM
-import express from 'express';
-import http from 'http';
-import hbs from 'express-handlebars';
-import cliArgs from 'yargs';
-import bodyParser from 'body-parser';
-import socketIo from 'socket.io';
-import mongoose from 'mongoose';
-import Twit from 'twit';
-import _ from 'lodash';
+var express    = require('express'),
+    http       = require('http'),
+    hbs        = require('express-handlebars'),
+    cliArgs    = require('yargs'),
+    bodyParser = require('body-parser'),
+    socketIo   = require('socket.io'),
+    mongoose   = require('mongoose'),
+    Twit       = require('twit'),
+    _          = require('lodash');
 
 // Modules
-import Conf from './conf';
-import SocketManager from './controllers/socket';
+var Conf          = require('./conf'),
+    SocketManager = require('./controllers/socket');
 
 // Controllers
-import BnfQueueCtrl from './controllers/bnfQueue';
+var BnfQueueCtrl  = require('./controllers/bnfQueue');
 
 // Workers
-import twitterWorker from './workers/twitterWorker';
-import awsWorker from './workers/awsWorker';
+var twitterWorker = require('./workers/twitterWorker'),
+    awsWorker     = require('./workers/awsWorker');
 
 let App = {
 
-  start() {
+  start: function() {
 
     // App bootstraping
     let app = express();
@@ -70,6 +72,7 @@ let App = {
 
     // Socket transport mode
     io.set('transports', ['polling', 'websocket']);
+    io.set('match origin protocol', true);
 
     // Default route serving the view otherwise
     app.get(indexRoutes, (req, res) => res.render('index'));
@@ -79,7 +82,7 @@ let App = {
       BnfQueueCtrl.getNextQueueItem(io, (err, latestQueueItem) => {
         if (_.endsWith(req.url, 'txt') || _.endsWith(req.url, 'bnf')) {
           // Send simple txt with `@username`
-          res.send(`@${latestQueueItem.username}`);
+          res.send('@' + latestQueueItem.username);
         } else {
           // Send full json
           res.json(latestQueueItem);
@@ -98,6 +101,6 @@ let App = {
 
   }
 
-}
+};
 
-export default App;
+module.exports = App;
