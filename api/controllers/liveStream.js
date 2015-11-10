@@ -1,10 +1,11 @@
-import mongoose from 'mongoose';
-import { argv } from 'yargs';
-import _ from 'lodash';
+'use strict';
+
+var mongoose = require('mongoose'),
+    _        = require('lodash');
 
 // Modules
-import Retweet from '../models/Retweet';
-import Conf from '../conf';
+var Retweet  = require('../models/Retweet'),
+    Conf     = require('../conf');
 
 let livestreamCtrl = {
 
@@ -21,7 +22,9 @@ let livestreamCtrl = {
       });
   },
 
-  getMoreTweets: function(options = {}, cb) {
+  getMoreTweets: function(options, cb) {
+    options = options || {};
+
     if (!options.offset) {
       Retweet
         .find({ hasBeenValidated: false })
@@ -75,4 +78,4 @@ let livestreamCtrl = {
 
 };
 
-export default livestreamCtrl;
+module.exports = livestreamCtrl;

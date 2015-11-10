@@ -1,4 +1,6 @@
-import mongoose from 'mongoose';
+'use strict';
+
+var mongoose = require('mongoose');
 
 let Schema = mongoose.Schema;
 
@@ -38,4 +40,4 @@ Rewteet.statics.randomDisplayed = function(callback) {
   }.bind(this));
 };
 
-export default mongoose.model('Rewteet', Rewteet);
+module.exports = mongoose.model('Rewteet', Rewteet);

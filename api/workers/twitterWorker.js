@@ -1,13 +1,15 @@
+'use strict';
+
 // NPM
-import Twit from 'twit';
+var Twit = require('twit');
 
 // Modules
-import Conf from '../conf';
-import TweetHandler from '../services/tweetHandler';
+var Conf = require('../conf'),
+    TweetHandler = require('../services/tweetHandler');
 
 let TwitterWorker = {
 
-  start(io) {
+  start: function(io) {
     let tweetHandler = new TweetHandler(io);
     let _this = this;
 
@@ -30,10 +32,10 @@ let TwitterWorker = {
     });
   },
 
-  setPauseState(state) {
+  setPauseState: function(state) {
     this.isPaused = !!state;
   }
 
 }
 
-export default TwitterWorker;
+module.exports = TwitterWorker;

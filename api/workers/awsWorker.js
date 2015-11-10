@@ -1,27 +1,27 @@
+'use strict';
+
 // NPM
-import AWS from 'aws-sdk';
-import scheduler from 'node-schedule';
-import _ from 'lodash';
+var AWS          = require('aws-sdk'),
+    scheduler    = require('node-schedule'),
+    _            = require('lodash');
 
 // Services
-import TweetHandler from '../services/tweetHandler';
+var TweetHandler = require('../services/tweetHandler');
 
 // Modules
-import Conf from '../conf';
-import BnfQueueCtrl from '../controllers/bnfQueue';
-import Retweet from '../models/Retweet';
+var Conf         = require('../conf'),
+    BnfQueueCtrl = require('../controllers/bnfQueue'),
+    Retweet      = require('../models/Retweet');
 
 let AwsWorker = {
 
-  start(io) {
+  start: function(io) {
     AWS.config.region = 'eu-west-1';
     AWS.config.accessKeyId = Conf.awsApi.accessKeyId;
     AWS.config.secretAccessKey = Conf.awsApi.secretAccessKey;
     AWS.config.sessionToken = Conf.awsApi.sessionToken;
 
     let s3 = new AWS.S3();
-    let params = { Bucket: Conf.awsApi.bucket };
-    let fileName = '';
 
     // Schedule a CRON job to run each minute
     scheduler.scheduleJob(Conf.vars.awsCronJobPatternDelay, () => {
@@ -41,7 +41,7 @@ let AwsWorker = {
     });
   },
 
-  fetchFileStatus(s3, rt) {
+  fetchFileStatus: function(s3, rt) {
     // Compose the filename according to the Twitter username
     let fileName = '@' + rt.username + '.jpg';
 
@@ -52,7 +52,8 @@ let AwsWorker = {
 
     s3.headObject(params, (err, metadata) => {
       if (!err) {
-        let fileUrl = `${Conf.awsApi.server}/${Conf.awsApi.bucket}/${fileName}`;
+        // let fileUrl = `${Conf.awsApi.server}/${Conf.awsApi.bucket}/${fileName}`;
+        let fileUrl = Conf.awsApi.server + '/' + Conf.awsApi.bucket + '/' + fileName;
 
         // Update the retweet with its new BNF photo
         rt.bnfPhoto = fileUrl;
@@ -71,4 +72,4 @@ let AwsWorker = {
 
 }
 
-export default AwsWorker;
+module.exports = AwsWorker;

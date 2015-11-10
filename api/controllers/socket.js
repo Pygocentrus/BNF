@@ -1,13 +1,15 @@
+'use strict';
+
 // Controllers
-import DailyTweetsCtrl from './dailyTweets';
-import LivestreamCtrl from './liveStream';
-import BnfQueueCtrl from './bnfQueue';
-import DisplayedCtrl from './displayed';
-import RejectedCtrl from './rejected';
+var DailyTweetsCtrl = require('./dailyTweets'),
+    LivestreamCtrl  = require('./liveStream'),
+    BnfQueueCtrl    = require('./bnfQueue'),
+    DisplayedCtrl   = require('./displayed'),
+    RejectedCtrl    = require('./rejected');
 
 let SocketManager = {
 
-  handleClient(socket, io, twitterWorker) {
+  handleClient: function(socket, io, twitterWorker) {
     // Dashboard all tweets
     socket.on('dashboard:daily-tweets:all', () => {
       DailyTweetsCtrl.getDailyTweets((err, dailyTweets) => {
@@ -100,4 +102,4 @@ let SocketManager = {
 
 };
 
-export default SocketManager;
+module.exports = SocketManager;

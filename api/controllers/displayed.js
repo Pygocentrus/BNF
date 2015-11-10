@@ -1,8 +1,10 @@
-import mongoose from 'mongoose';
-import _ from 'lodash';
+'use strict';
+
+var mongoose = require('mongoose'),
+    _        = require('lodash');
 
 // Modules
-import Retweet from '../models/Retweet';
+var Retweet  = require('../models/Retweet');
 
 let displayedTweetsCtrl = {
 
@@ -21,4 +23,4 @@ let displayedTweetsCtrl = {
 
 };
 
-export default displayedTweetsCtrl;
+module.exports = displayedTweetsCtrl;

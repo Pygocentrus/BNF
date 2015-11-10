@@ -1,9 +1,10 @@
-import mongoose from 'mongoose';
-import { argv } from 'yargs';
+'use strict';
+
+var mongoose   = require('mongoose');
 
 // Modules
-import DailyTweet from '../models/DailyTweet';
-import Conf from '../conf';
+var DailyTweet = require('../models/DailyTweet'),
+    Conf       = require('../conf');
 
 let dailyTweetsCtrl = {
 
@@ -38,4 +39,4 @@ let dailyTweetsCtrl = {
 
 };
 
-export default dailyTweetsCtrl;
+module.exports = dailyTweetsCtrl;
