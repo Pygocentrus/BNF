@@ -75,9 +75,9 @@ let App = {
     app.get(indexRoutes, (req, res) => res.render('index'));
 
     // Open API for the BNF
-    app.get('/api/item.(json|txt)', (req, res) => {
+    app.get(['/api/item.(json|txt)', '/api/bnf'], (req, res) => {
       BnfQueueCtrl.getNextQueueItem(io, (err, latestQueueItem) => {
-        if (_.endsWith(req.url, 'txt')) {
+        if (_.endsWith(req.url, 'txt') || _.endsWith(req.url, 'bnf')) {
           // Send simple txt with `@username`
           res.send(`@${latestQueueItem.username}`);
         } else {

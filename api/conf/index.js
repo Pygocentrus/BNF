@@ -6,8 +6,8 @@ let Conf = {
   },
   mongo: {
     dev: 'localhost/bfm',
-    staging: '',
-    prod: '',
+    staging: 'localhost/bfm',
+    prod: 'localhost/bfm',
   },
   twitterApi: {
     account: 'lemondefr',
