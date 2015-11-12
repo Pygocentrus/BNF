@@ -3,6 +3,8 @@
 // NPM
 var mongoose   = require('mongoose'),
     Twit       = require('twit'),
+    Handlebars = require('handlebars'),
+    fs         = require('fs'),
     _          = require('lodash');
 
 // Modules
@@ -42,12 +44,29 @@ TweetHandler.prototype.answerBackToRewteet = function(retweet) {
       access_token_secret: Conf.twitterApi.access_token_secret
     });
 
-    T.post('statuses/update', {
-      in_reply_to_status_id: retweet.rtIdStr,
-      status: '@' + retweet.username + '! Retrouvez votre photo ici: ' + retweet.bnfPhoto
-    }, function (err, data, response) {
+    let message = '@{{ username }}: Merci d\'être ambassadeur de la biodiversité ! Votre photo ici: {{ picture }}',
+        source,
+        tpl;
+
+    // Compile the custom template and answer back to the user
+    fs.readFile('api/templates/thanks_fr.hbs', (err, data) => {
       if (!err) {
-        _this.updateAnsweredStatus(retweet);
+        source  = data.toString();
+        tpl     = Handlebars.compile(source);
+        message = tpl({ username: retweet.username, picture: retweet.bnfPhoto });
+
+        // Answer to the user retweet
+        // using this new compiled message
+        T.post('statuses/update', {
+          in_reply_to_status_id: retweet.rtIdStr,
+          status: message
+        }, (err, data, response) => {
+          if (!err) {
+            _this.updateAnsweredStatus(retweet);
+          }
+        });
+      } else {
+        console.log('Err', err);
       }
     });
   }
