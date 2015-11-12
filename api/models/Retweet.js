@@ -40,4 +40,4 @@ Rewteet.statics.randomDisplayed = function(callback) {
   }.bind(this));
 };
 
-module.exports = mongoose.model('Rewteet', Rewteet);
+module.exports = mongoose.model('Retweet', Rewteet);
