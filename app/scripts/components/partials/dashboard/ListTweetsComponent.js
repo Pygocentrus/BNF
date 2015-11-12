@@ -20,7 +20,7 @@ class ListTweetsComponent extends Component {
     // Compose each Tweet cards in the grid
     if (this.props.dailyTweets) {
       dailyTweets = this.props.dailyTweets.map( (tweet) => {
-        return <TweetComponent key={ tweet.id } link={ tweet.link }/>;
+        return <TweetComponent key={ tweet.id } id={ tweet.id } link={ tweet.link }/>;
       });
     }
 

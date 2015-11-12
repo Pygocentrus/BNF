@@ -25,8 +25,10 @@ let SocketManager = {
     });
 
     // Remove daily tweet
-    socket.on('dashboard:daily-tweets:remove', () => {
-      io.emit('dashboard:daily-tweets:remove', { answer: 'removed!' });
+    socket.on('dashboard:daily-tweets:remove', (data) => {
+      DailyTweetsCtrl.removeDailyTweet(data.tweet, (err) => {
+        io.emit('dashboard:daily-tweets:remove', { status: err === null ? 200 : 500 });
+      });
     });
 
     // Get all rewteets in the /live

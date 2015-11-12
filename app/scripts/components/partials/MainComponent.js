@@ -13,6 +13,7 @@ import DailyTweetActions from '../../actions/DashboardActions';
 import ListTweetsComponent from './dashboard/ListTweetsComponent';
 
 // Socket io Instance
+// let socket = io.connect(Conf.socketHost, { secure: false, port: 8080 });
 let socket = io.connect(Conf.socketHost);
 
 // Daily tweets update from the store

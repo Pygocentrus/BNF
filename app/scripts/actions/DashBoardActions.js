@@ -18,10 +18,10 @@ var DashboardActions = {
     });
   },
 
-  removeTweet: function(tweet) {
+  removeTweet: function(data) {
     AppDispatcher.handleViewAction({
       actionType: DashboardConstants.DASHBOARD_TWEETS_REMOVE,
-      tweet: tweet
+      tweet: data.tweet
     });
   },
 
