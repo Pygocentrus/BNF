@@ -13,6 +13,7 @@ let Rewteet = new Schema({
   displayQueueId: Number,
   username: String,
   name: String,
+  lang: { type: String, default: 'en' },
   location: String,
   photo: { type: String, default: null },
   bnfPhoto: {type: String, default: null },

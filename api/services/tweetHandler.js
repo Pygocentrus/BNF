@@ -4,11 +4,13 @@
 var mongoose   = require('mongoose'),
     Twit       = require('twit'),
     Handlebars = require('handlebars'),
+    request    = require('request'),
     fs         = require('fs'),
     _          = require('lodash');
 
 // Modules
 var Conf       = require('../conf'),
+    Utils      = require('../utils'),
     Retweet    = require('../models/Retweet'),
     DailyTweet = require('../models/DailyTweet');
 
@@ -44,12 +46,13 @@ TweetHandler.prototype.answerBackToRewteet = function(retweet) {
       access_token_secret: Conf.twitterApi.access_token_secret
     });
 
-    let message = '@{{ username }}: Merci d\'être ambassadeur de la biodiversité ! Votre photo ici: {{ picture }}',
+    let file = 'api/templates/thanks_' + retweet.lang + '.hbs',
+        message,
         source,
         tpl;
 
     // Compile the custom template and answer back to the user
-    fs.readFile('api/templates/thanks_fr.hbs', (err, data) => {
+    fs.readFile(file, (err, data) => {
       if (!err) {
         source  = data.toString();
         tpl     = Handlebars.compile(source);
@@ -70,6 +73,32 @@ TweetHandler.prototype.answerBackToRewteet = function(retweet) {
       }
     });
   }
+};
+
+TweetHandler.prototype.checkCountry = function(retweet) {
+  return new Promise((resolve, reject) => {
+    let string = retweet.location || retweet.time_zone || retweet.description;
+
+    if (string) {
+      let url = [
+        Conf.googleApi.url,
+        Conf.googleApi.keyParam,
+        Conf.googleApi.queryParam,
+        encodeURIComponent(string)
+      ].join('');
+
+      request(url, (error, response, body) => {
+        if (!error && response.statusCode == 200) {
+          let res = JSON.parse(body);
+          resolve(_.first(res.data.detections));
+        } else {
+          reject(null);
+        }
+      });
+    } else {
+      reject(null);
+    }
+  });
 };
 
 TweetHandler.prototype.updateAnsweredStatus = function(retweet) {
@@ -110,6 +139,7 @@ TweetHandler.prototype.manage = function(tweet) {
         rt.originalTweetId = originalTweetId;
         rt.username = tweet.user.screen_name;
         rt.name = tweet.user.name;
+        rt.lang = ['fr', 'en'].indexOf(tweet.user.lang) > -1 ? tweet.user.lang : 'fr';
         rt.location = tweet.user.location;
         rt.photo = tweet.user.profile_image_url;
         rt.followers = tweet.user.followers_count;
@@ -117,7 +147,6 @@ TweetHandler.prototype.manage = function(tweet) {
 
         rt.save((err, retweet) => {
           if (!err && retweet) {
-            console.log('New RT: ', retweet.username);
             // Broadcast the new tweet
             this.broadcast(retweet);
           }
