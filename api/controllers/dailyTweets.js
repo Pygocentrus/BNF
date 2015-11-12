@@ -37,6 +37,16 @@ let dailyTweetsCtrl = {
     });
   },
 
+  removeDailyTweet: function(tweetId, cb) {
+    DailyTweet.remove({ id: tweetId }, (err, tweet) => {
+      if (err || !tweet) {
+        cb.call(this, err, null);
+      } else {
+        cb.call(this, null);
+      }
+    });
+  },
+
 };
 
 module.exports = dailyTweetsCtrl;

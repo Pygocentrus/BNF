@@ -39,6 +39,10 @@ function addTweet(tweetUrl) {
 }
 
 function removeTweet(tweetID) {
+  // Send the request to the server
+  socket.emit('dashboard:daily-tweets:remove', { tweet: tweetID });
+
+  // Remove it locally
   _dailyTweets = _.remove(_dailyTweets, (tweet) => tweet.id !== tweetID);
 }
 
@@ -71,9 +75,18 @@ let DailyTweetStore = _.merge(EventEmitter.prototype, {
   },
 
   removeDailyTweet(tweet) {
-    if (tweet && tweet.id) {
-      removeTweet(tweet.id);
-    }
+    console.log('Tweet', tweet);
+    // Send the request to the server
+    socket.emit('dashboard:daily-tweets:remove', { tweet: tweet });
+
+    socket.on('dashboard:daily-tweets:remove', (data) => {
+      if (data & data.tweet) {
+        // Remove it locally
+        if (tweet && tweet.id) {
+          removeTweet(tweet.id);
+        }
+      }
+    });
   },
 
   emitChange() {

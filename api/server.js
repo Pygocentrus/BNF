@@ -72,7 +72,7 @@ let App = {
 
     // Socket transport mode
     io.set('transports', ['polling', 'websocket']);
-    io.set('match origin protocol', true);
+    // io.set('match origin protocol', true);
 
     // Default route serving the view otherwise
     app.get(indexRoutes, (req, res) => res.render('index'));
