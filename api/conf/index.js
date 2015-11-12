@@ -12,7 +12,7 @@ let Conf = {
     prod: 'localhost/bfm',
   },
   twitterApi: {
-    account: 'lemondefr',
+    account: 'pierreguilhou',
     tag: 'pierreguilhou',
     accountId: '',
     consumer_key: '9vLhRpf785U7ZTEQCuGMsYbLb',
@@ -26,6 +26,11 @@ let Conf = {
     accessKeyId: 'AKIAIPDRFK5OZODPENPA',
     secretAccessKey: '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',
     sessionToken: '',
+  },
+  googleApi: {
+    url: 'https://www.googleapis.com/language/translate/v2/detect',
+    keyParam: '?key=AIzaSyCX6fZKIDl10FEmsSnqEpHMBw8YiCruMm0',
+    queryParam: '&q=',
   },
   vars: {
     liveTweetOffset: 25,
