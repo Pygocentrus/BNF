@@ -12,14 +12,13 @@ let Conf = {
     prod: 'localhost/bfm',
   },
   twitterApi: {
-    account: 'lemondefr',
-    // account: 'BBCBreaking',
-    tag: 'BBCBreaking',
+    account: 'pierreguilhou',
+    tag: 'pierreguilhou',
     accountId: '',
-    consumer_key: 'hqRgWDRUaKmgUTAoaHw40n7VN',
-    consumer_secret: '6A8ARe38WP29uU2KNCHqi485e61DOrMAXnanJHoTjTmlBZpBr6',
-    access_token: '2966847166-UIfU2urCpyuRWh9yBksth2CNGYPR4cjv1XU6ARq',
-    access_token_secret: 's9snLH571Uk5UyGu679ie7su1gvghvXw0niCZq69cj36M',
+    consumer_key: '9vLhRpf785U7ZTEQCuGMsYbLb',
+    consumer_secret: 'ZHU4E62FLYopxO3kIDSWYF0vkYSk9VRzKK1L1uTQtJS2XFKovo',
+    access_token: '2966847166-rt4hyHA8bWauhmSf77Ljaht35z38FWbw6CYRkEZ',
+    access_token_secret: '9o89vO7LfGGWyiP2R8FEIKZo6TUgMin8K6PDgpvXqpNDO',
   },
   awsApi: {
     bucket: 'wte-bnf',
@@ -35,3 +34,26 @@ let Conf = {
 };
 
 module.exports = Conf;
+
+// FIXME: Test account
+// twitterApi: {
+// //   account: 'lemondefr',
+// account: 'pierreguilhou',
+// tag: 'pierreguilhou',
+// accountId: '',
+// consumer_key: '9vLhRpf785U7ZTEQCuGMsYbLb',
+// consumer_secret: 'ZHU4E62FLYopxO3kIDSWYF0vkYSk9VRzKK1L1uTQtJS2XFKovo',
+// access_token: '2966847166-rt4hyHA8bWauhmSf77Ljaht35z38FWbw6CYRkEZ',
+// access_token_secret: '9o89vO7LfGGWyiP2R8FEIKZo6TUgMin8K6PDgpvXqpNDO',
+// },
+
+// FIXME: Wild touch account
+// twitterApi: {
+//   account: 'wild_touch',
+//   tag: 'BBCBreaking',
+//   accountId: '',
+//   consumer_key: 'Nnh1RRFNuhkGKtsKOecwbg',
+//   consumer_secret: 'USZv8Hfgu2wof9CzjrNLPIw0Y8L9JK5xsA3sKVbKWM',
+//   access_token: '631187764-9a2mi6zKwNmShlUgsgQzcif0MvGSrv4iXkswPx6w',
+//   access_token_secret: 'Lg49ajDvqEcOV2jlIjX4XDS34COJE1ykc0ZwEjtkZmM',
+// },
