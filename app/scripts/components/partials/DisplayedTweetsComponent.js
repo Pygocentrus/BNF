@@ -5,7 +5,7 @@ import io from 'socket.io-client';
 
 // Modules
 import Conf from '../../conf/conf';
-import DisplayedStore from '../../stores/displayedStore';
+import DisplayedStore from '../../stores/DisplayedStore';
 import DisplayedActions from '../../actions/DisplayedActions';
 
 // Components

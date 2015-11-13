@@ -37,6 +37,7 @@ class TweetsRowComponent extends Component {
         btn = this._actionsQueue();
         break;
       case 'displayed':
+      case 'rejected':
         btn = this._displayedActions();
         break;
       case 'live':

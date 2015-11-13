@@ -12,7 +12,7 @@ let Conf = {
     prod: 'localhost/bfm',
   },
   twitterApi: {
-    account: 'pierreguilhou',
+    account: 'lemondefr',
     tag: 'pierreguilhou',
     accountId: '',
     consumer_key: '9vLhRpf785U7ZTEQCuGMsYbLb',
