@@ -36,9 +36,53 @@ TweetHandler.prototype.checkOneOfDailyTweet = function(tweet, cb) {
 };
 
 TweetHandler.prototype.answerBackToRewteet = function(retweet) {
-  let _this = this;
-
   if (!retweet.hasBeenReplied && retweet.bnfPhoto) {
+    let file = 'api/templates/thanks_' + retweet.lang + '.hbs';
+
+    // Check lang template, shorten image URL, send tweet response & update status
+    Utils.readFilePromisified(file)
+      .then(this.shortenPhotoLink.bind(null, retweet.bnfPhoto))
+      .then(this.replyToUser.bind(null, retweet))
+      .then((data) => {
+        this.updateAnsweredStatus(data);
+      });
+  }
+};
+
+TweetHandler.prototype.shortenPhotoLink = function(link, template) {
+  return new Promise((resolve, reject) => {
+    if (link) {
+      let key = Conf.googleApi.apiKeyFront;
+      let url = Conf.googleApi.shortenerUrl + '?key=' + key + '&longUrl=' + link;
+
+      // Ask Google to shorten the url
+      request({
+        url: url + '?key=' + key + '&longUrl=' + link,
+        method: "POST",
+        json: true,
+        body: { longUrl: link, key: key }
+      }, (error, response, body) => {
+        if (error || !body) {
+          resolve({ shortenedUrl: null, template: template });
+        } else {
+          resolve({ shortenedUrl: body, template: template });
+        }
+      });
+    } else {
+      resolve({ shortenedUrl: null, template: template });
+    }
+  });
+};
+
+TweetHandler.prototype.replyToUser = function(retweet, data) {
+  return new Promise((resolve, reject) => {
+    let link = data.shortenedUrl.id;
+    let template = data.template;
+    let tpl = Handlebars.compile(template);
+
+    // Compile the message
+    let message = tpl({ username: retweet.username, picture: link });
+
     let T = new Twit({
       consumer_key: Conf.twitterApi.consumer_key,
       consumer_secret: Conf.twitterApi.consumer_secret,
@@ -46,33 +90,19 @@ TweetHandler.prototype.answerBackToRewteet = function(retweet) {
       access_token_secret: Conf.twitterApi.access_token_secret
     });
 
-    let file = 'api/templates/thanks_' + retweet.lang + '.hbs',
-        message,
-        source,
-        tpl;
-
-    // Compile the custom template and answer back to the user
-    fs.readFile(file, (err, data) => {
+    // Answer to the user retweet
+    // using this new compiled message & the shortened link
+    T.post('statuses/update', {
+      in_reply_to_status_id: retweet.rtIdStr,
+      status: message
+    }, (err, data, response) => {
       if (!err) {
-        source  = data.toString();
-        tpl     = Handlebars.compile(source);
-        message = tpl({ username: retweet.username, picture: retweet.bnfPhoto });
-
-        // Answer to the user retweet
-        // using this new compiled message
-        T.post('statuses/update', {
-          in_reply_to_status_id: retweet.rtIdStr,
-          status: message
-        }, (err, data, response) => {
-          if (!err) {
-            _this.updateAnsweredStatus(retweet);
-          }
-        });
+        resolve(retweet);
       } else {
-        console.log('Err', err);
+        reject(retweet);
       }
     });
-  }
+  });
 };
 
 TweetHandler.prototype.checkCountry = function(retweet) {
@@ -81,8 +111,8 @@ TweetHandler.prototype.checkCountry = function(retweet) {
 
     if (string) {
       let url = [
-        Conf.googleApi.url,
-        Conf.googleApi.keyParam,
+        Conf.googleApi.translateUrl,
+        Conf.googleApi.apiKey,
         Conf.googleApi.queryParam,
         encodeURIComponent(string)
       ].join('');

@@ -28,8 +28,10 @@ let Conf = {
     sessionToken: '',
   },
   googleApi: {
-    url: 'https://www.googleapis.com/language/translate/v2/detect',
-    keyParam: '?key=AIzaSyCX6fZKIDl10FEmsSnqEpHMBw8YiCruMm0',
+    translateUrl: 'https://www.googleapis.com/language/translate/v2/detect?key=',
+    shortenerUrl: 'https://www.googleapis.com/urlshortener/v1/url',
+    apiKeyBack: 'AIzaSyCX6fZKIDl10FEmsSnqEpHMBw8YiCruMm0',
+    apiKeyFront: 'AIzaSyC2xBJJswIpwGKSDHKXuwMzuXuhIXQRfIs',
     queryParam: '&q=',
   },
   vars: {
