@@ -43,9 +43,8 @@ TweetHandler.prototype.answerBackToRewteet = function(retweet) {
     Utils.readFilePromisified(file)
       .then(this.shortenPhotoLink.bind(null, retweet.bnfPhoto))
       .then(this.replyToUser.bind(null, retweet))
-      .then((data) => {
-        this.updateAnsweredStatus(data);
-      });
+      .then(this.updateAnsweredStatus)
+      .catch(()=>({}));
   }
 };
 
@@ -140,11 +139,7 @@ TweetHandler.prototype.updateAnsweredStatus = function(retweet) {
       // If we found the rewteet, let's update its status
       // to hasBeenReplied
       rt.hasBeenReplied = true;
-
-      rt.save((err, updatedRt) => {
-        if (err || !updatedRt) {}
-        else {}
-      });
+      rt.save((err, updatedRt) => ({}));
     }
   });
 };
