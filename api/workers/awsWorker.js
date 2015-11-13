@@ -59,11 +59,8 @@ let AwsWorker = {
         rt.bnfPhoto = fileUrl;
         rt.save((err, updatedRt) => {
           if (!err && updatedRt) {
-            console.log('BNF picture uploaded for ', rt.username, '[' + rt.bnfPhoto + ']');
-
             // Respond to the original retweet
-            new TweetHandler()
-              .answerBackToRewteet(updatedRt);
+            new TweetHandler().answerBackToRewteet(updatedRt);
           }
         });
       }

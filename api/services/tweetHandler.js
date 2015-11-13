@@ -75,9 +75,13 @@ TweetHandler.prototype.shortenPhotoLink = function(link, template) {
 
 TweetHandler.prototype.replyToUser = function(retweet, data) {
   return new Promise((resolve, reject) => {
-    let link = data.shortenedUrl.id;
     let template = data.template;
     let tpl = Handlebars.compile(template);
+
+    // Use shortened photo, fallback to regular url otherwise
+    let link = data.shortenedUrl.id !== 'undefined'
+      ? data.shortenedUrl.id
+      : rewteet.bnfPhoto;
 
     // Compile the message
     let message = tpl({ username: retweet.username, picture: link });
