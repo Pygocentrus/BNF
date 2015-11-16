@@ -5,6 +5,7 @@ var DailyTweetsCtrl = require('./dailyTweets'),
     LivestreamCtrl  = require('./liveStream'),
     BnfQueueCtrl    = require('./bnfQueue'),
     DisplayedCtrl   = require('./displayed'),
+    StatsTweetsCtrl = require('./stats'),
     RejectedCtrl    = require('./rejected');
 
 let SocketManager = {
@@ -98,6 +99,13 @@ let SocketManager = {
     socket.on('rejected:retweets:all', () => {
       RejectedCtrl.getRejectedTweets((err, retweets) => {
         io.emit('rejected:retweets:all', { retweets: retweets, err: err });
+      });
+    });
+
+    // Get all rejected tweets
+    socket.on('stats:retweets:all', () => {
+      StatsTweetsCtrl.getAllTweets((err, retweets) => {
+        io.emit('stats:retweets:all', { data: retweets, err: err });
       });
     });
   },
