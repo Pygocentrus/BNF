@@ -48,15 +48,21 @@ class HeaderComponent extends React.Component {
                   File d'attente BNF
                 </NavItem>
               </LinkContainer>
-              <NavDropdown eventKey={4} title="Tweets" id="collapsible-navbar-dropdown">
+              <LinkContainer to="/stats">
+                <NavItem eventKey={4} href="#">
+                  <Glyphicon glyph="stats" />&nbsp;
+                  Statistiques
+                </NavItem>
+              </LinkContainer>
+              <NavDropdown eventKey={5} title="Tweets" id="collapsible-navbar-dropdown">
                 <LinkContainer to="/displayed">
-                  <NavItem eventKey={5} href="#">
+                  <NavItem eventKey={6} href="#">
                     <Glyphicon glyph="ok" />&nbsp;
                     Affichés
                   </NavItem>
                 </LinkContainer>
                 <LinkContainer to="/rejected">
-                  <NavItem eventKey={6} href="#">
+                  <NavItem eventKey={7} href="#">
                     <Glyphicon glyph="remove" />&nbsp;
                     Refusés
                   </NavItem>

@@ -82,7 +82,7 @@ class RejectedTweetsComponent extends React.Component {
 
   _rejectedCounter() {
     let counter = this.state.rejectedTweets.length;
-    return counter + ' affiché' + (counter > 1 ? 's' : '');
+    return counter + ' refusé' + (counter > 1 ? 's' : '');
   }
 
   _onChange() {

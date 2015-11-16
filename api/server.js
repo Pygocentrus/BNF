@@ -43,7 +43,7 @@ let App = {
 
     // Front reserved routes that are
     // being rerouted towards index
-    let indexRoutes = ['/', '/dashboard', '/live', '/queue', '/displayed', '/rejected'];
+    let indexRoutes = ['/', '/dashboard', '/live', '/queue', '/stats', '/displayed', '/rejected'];
 
     // Body parser
     app.use(bodyParser.json());

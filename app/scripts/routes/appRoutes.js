@@ -10,6 +10,7 @@ import LiveComponent from '../components/partials/LiveComponent';
 import QueueComponent from '../components/partials/QueueComponent';
 import DisplayedTweetsComponent from '../components/partials/DisplayedTweetsComponent';
 import RejectedTweetsComponent from '../components/partials/RejectedTweetsComponent';
+import StatsComponent from '../components/partials/StatsComponent';
 import NotFoundComponent from '../components/partials/NotFoundComponent';
 
 const history = createBrowserHistory({ queryKey: false });
@@ -23,6 +24,7 @@ let Routes = (
       <Route path="queue" component={QueueComponent} />
       <Route path="displayed" component={DisplayedTweetsComponent} />
       <Route path="rejected" component={RejectedTweetsComponent} />
+      <Route path="stats" component={StatsComponent} />
       <Route path="*" component={NotFoundComponent}/>
     </Route>
   </Router>
