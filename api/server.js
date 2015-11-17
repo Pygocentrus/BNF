@@ -8,11 +8,13 @@ var express    = require('express'),
     bodyParser = require('body-parser'),
     socketIo   = require('socket.io'),
     mongoose   = require('mongoose'),
+    Handlebars = require('handlebars'),
     Twit       = require('twit'),
     _          = require('lodash');
 
 // Modules
 var Conf          = require('./conf'),
+    Utils         = require('./utils'),
     SocketManager = require('./controllers/socket');
 
 // Controllers
@@ -81,8 +83,24 @@ let App = {
     app.get(['/api/item.(json|txt)', '/api/bnf'], (req, res) => {
       BnfQueueCtrl.getNextQueueItem(io, (err, latestQueueItem) => {
         if (_.endsWith(req.url, 'txt') || _.endsWith(req.url, 'bnf')) {
-          // Send simple txt with `@username`
-          res.send('@' + latestQueueItem.username);
+          let file = 'api/templates/bnf_message_' + latestQueueItem.lang + '.hbs';
+
+          // Try to send lang-customized message using template
+          Utils.readFilePromisified(file)
+            .then((template) => {
+              let tpl = Handlebars.compile(template);
+              res.send(tpl({ username: latestQueueItem.username }));
+            })
+            .catch(() => {
+              // Some error happened, let's send regular message
+              let message = [
+                '@' + latestQueueItem.username,
+                ' est ambassadeur pour la biodiversité en Antarctique.\n',
+                'RT sur @wild_touch et découvrez l\'expédition #WildTouchExpeditions'
+              ].join('');
+
+              res.send(message);
+            });
         } else {
           // Send full json
           res.json(latestQueueItem);
