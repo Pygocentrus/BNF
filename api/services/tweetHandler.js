@@ -153,12 +153,14 @@ TweetHandler.prototype.broadcast = function(tweet) {
 };
 
 TweetHandler.prototype.manage = function(tweet) {
-  if (this.isNotMainAccountTweet(tweet) && this.isRetweet(tweet)) {
+  var _this = this;
+
+  if (_this.isNotMainAccountTweet(tweet) && _this.isRetweet(tweet)) {
 
     let reTweetId = tweet.id_str.replace(/\'/g, "");
     let originalTweetId = tweet.retweeted_status.id_str.replace(/\'/g, "");
 
-    this.checkOneOfDailyTweet(tweet, (err, matchingDailyTweets, tweet) => {
+    _this.checkOneOfDailyTweet(tweet, (err, matchingDailyTweets, tweet) => {
       if (!err && matchingDailyTweets.length) {
 
         let rt = new Retweet();
@@ -177,7 +179,7 @@ TweetHandler.prototype.manage = function(tweet) {
         rt.save((err, retweet) => {
           if (!err && retweet) {
             // Broadcast the new tweet
-            this.broadcast(retweet);
+            _this.broadcast(retweet);
           }
         });
       }

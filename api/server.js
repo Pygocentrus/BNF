@@ -3,6 +3,7 @@
 // NPM
 var express    = require('express'),
     http       = require('http'),
+    https      = require('https'),
     hbs        = require('express-handlebars'),
     cliArgs    = require('yargs'),
     bodyParser = require('body-parser'),
@@ -10,6 +11,7 @@ var express    = require('express'),
     mongoose   = require('mongoose'),
     Handlebars = require('handlebars'),
     Twit       = require('twit'),
+    fs         = require('fs'),
     _          = require('lodash');
 
 // Modules
@@ -28,24 +30,38 @@ let App = {
 
   start: function() {
 
-    // App bootstraping
-    let app = express();
-    let server = http.Server(app);
-    let isPaused = false;
-    let io, sm;
-
     // App conf according to ENV
     let args = cliArgs.argv;
-    let assetsPath = __dirname + '/../' + (args.production ? 'public' : 'app');
-    let port = args.production ? Conf.ports.prod : Conf.ports.dev;
-
-    // Connect to mongo server
-    let mongoUri = args.production ? Conf.mongo.prod : Conf.mongo.dev;
-    mongoose.connect('mongodb://' + mongoUri);
+    let isProdEnv = args.production || process.env.NODE_ENV === 'production';
+    let assetsPath = __dirname + '/../' + (isProdEnv ? 'public' : 'app');
+    let port = isProdEnv ? Conf.ports.prod : Conf.ports.dev;
+    let isPaused = false;
+    let io, sm, mongoUri;
 
     // Front reserved routes that are
     // being rerouted towards index
     let indexRoutes = ['/', '/dashboard', '/live', '/queue', '/stats', '/displayed', '/rejected'];
+
+    // App bootstraping
+    let app = express();
+
+    // Socket config for prod env
+    // if (isProdEnv) {
+    //   let options = {
+    //     key: fs.readFileSync('./ssl/file.pem'),
+    //     cert: fs.readFileSync('./ssl/file.crt')
+    //   };
+    //
+    //   let port = 443;
+    //
+    //   let server = https.createServer(options, app);
+    // } else {
+    let server = http.Server(app);
+    // }
+
+    // Connect to mongo server
+    mongoUri = isProdEnv ? Conf.mongo.prod : Conf.mongo.dev;
+    mongoose.connect('mongodb://' + mongoUri);
 
     // Body parser
     app.use(bodyParser.json());
