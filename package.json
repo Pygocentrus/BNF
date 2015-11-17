@@ -7,7 +7,7 @@
     "node": ">=0.12"
   },
   "scripts": {
-    "start": "node --harmony index.js",
+    "start": "NODE_ENV=production node --harmony index.js",
     "deps": "echo \"Fetching dependencies...\" && npm i && bower i",
     "backend": "echo \"Serving backend app\" && node index.js --harmony",
     "backend-prod": "echo \"Serving backend app\" && node index.js --harmony --production",
