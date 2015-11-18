@@ -9,7 +9,7 @@ import DisplayedStore from '../../stores/DisplayedStore';
 import DisplayedActions from '../../actions/DisplayedActions';
 
 // Components
-import LiveTweets from './live/TweetsTabComponent';
+import DisplayedTabComponent from './displayed/DisplayedTabComponent';
 
 // Socket io Instance
 let socket = io.connect(Conf.socketHost);
@@ -74,7 +74,7 @@ class DisplayedTweetsComponent extends React.Component {
         </Jumbotron>
 
         {/* Tweets tab */}
-        <LiveTweets liveTweets={ this.state.displayedTweets } actionsType="displayed"/>
+        <DisplayedTabComponent displayedTweets={ this.state.displayedTweets }/>
       </section>
     )
 
