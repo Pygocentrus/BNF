@@ -1,7 +1,7 @@
 let Conf = new (function() {
   // this.env = 'prod';
   this.env = 'dev';
-  this.twitterAccount = 'lemondefr';
+  this.twitterAccount = 'pierreguilhou';
   // this.twitterAccount = 'wild_touch';
   // this.twitterAccount = 'PierreGuilhou';
   this.devBase = 'http://localhost:3000';
