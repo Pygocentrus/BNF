@@ -32,6 +32,7 @@ class LiveComponent extends React.Component {
     this._onChange = this._onChange.bind(this);
     this._loadMorePosts = this._loadMorePosts.bind(this);
     this._resetData = this._resetData.bind(this);
+    this._twitterAccountUrl = this._twitterAccountUrl.bind(this);
 
     // Fetch oldest elements with offset
     socket.emit('livestream:retweets:more', { offset: 0 });
@@ -87,7 +88,8 @@ class LiveComponent extends React.Component {
         {/* Intro header */}
         <Jumbotron>
           <PageHeader>
-            Livestream Twitter @{ Conf.twitterAccount }
+            Livestream Twitter&nbsp;
+            <a target="_blank" href={ this._twitterAccountUrl() }>@{ Conf.twitterAccount }</a>
             <br />
             <small>({ this.state.liveTweets.length } éléments)</small>
             <br />
@@ -120,6 +122,10 @@ class LiveComponent extends React.Component {
 
   _loadMorePosts() {
     socket.emit('livestream:retweets:more', { offset: this.state.liveTweets.length });
+  }
+
+  _twitterAccountUrl() {
+    return 'http://twitter.com/' + Conf.twitterAccount;
   }
 
 }

@@ -1,18 +1,17 @@
 'use strict';
 
 // NPM
-var express    = require('express'),
-    http       = require('http'),
-    https      = require('https'),
-    hbs        = require('express-handlebars'),
-    cliArgs    = require('yargs'),
-    bodyParser = require('body-parser'),
-    socketIo   = require('socket.io'),
-    mongoose   = require('mongoose'),
-    Handlebars = require('handlebars'),
-    Twit       = require('twit'),
-    fs         = require('fs'),
-    _          = require('lodash');
+var express       = require('express'),
+    http          = require('http'),
+    hbs           = require('express-handlebars'),
+    cliArgs       = require('yargs'),
+    bodyParser    = require('body-parser'),
+    socketIo      = require('socket.io'),
+    mongoose      = require('mongoose'),
+    Handlebars    = require('handlebars'),
+    Twit          = require('twit'),
+    fs            = require('fs'),
+    _             = require('lodash');
 
 // Modules
 var Conf          = require('./conf'),
@@ -44,20 +43,7 @@ let App = {
 
     // App bootstraping
     let app = express();
-
-    // Socket config for prod env
-    // if (isProdEnv) {
-    //   let options = {
-    //     key: fs.readFileSync('./ssl/file.pem'),
-    //     cert: fs.readFileSync('./ssl/file.crt')
-    //   };
-    //
-    //   let port = 443;
-    //
-    //   let server = https.createServer(options, app);
-    // } else {
     let server = http.Server(app);
-    // }
 
     // Connect to mongo server
     mongoUri = isProdEnv ? Conf.mongo.prod : Conf.mongo.dev;
