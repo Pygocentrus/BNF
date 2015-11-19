@@ -1,7 +1,7 @@
 // Packages
 import React, { Component, PropTypes } from 'react';
 import io from 'socket.io-client';
-import { Input, Button, Panel } from 'react-bootstrap';
+import { Input, Button, Panel, Glyphicon } from 'react-bootstrap';
 
 // Modules
 import Conf from '../../../conf/conf';
@@ -73,7 +73,7 @@ class DailyMessageComponent extends Component {
         <Button
           bsStyle="primary"
           onClick={ this._handleClickNew }>
-          Ajouter ou modifier le message
+          <Glyphicon glyph="pencil" />&nbsp;Ajouter ou modifier le message
         </Button>
       </Panel>
     );
