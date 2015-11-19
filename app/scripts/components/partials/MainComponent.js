@@ -11,10 +11,10 @@ import Conf from '../../conf/conf';
 import DailyTweetStore from '../../stores/DashboardDailyTweets';
 import DailyTweetActions from '../../actions/DashboardActions';
 import ListTweetsComponent from './dashboard/ListTweetsComponent';
+import DailyMessageComponent from './dashboard/DailyMessageComponent';
 
 // Socket io Instance
 let socket = io.connect(Conf.socketHost, { secure: false, port: 8080 });
-// let socket = io.connect(Conf.socketHost);
 
 // Daily tweets update from the store
 let getDailyTweetsState = () => {
@@ -83,6 +83,10 @@ class MainComponent extends Component {
           <p>Interface d'administration</p>
         </Jumbotron>
 
+        <DailyMessageComponent />
+
+        <br />
+
         <h2>Ajout d'un nouveau tweet à surveiller:</h2><hr />
 
         {/* Form to add new daily tweets */}
@@ -99,8 +103,6 @@ class MainComponent extends Component {
             Ajouter un nouveau Tweet
           </Button>
         </div>
-
-        <h2>Derniers tweets à surveiller:</h2><hr />
 
         {/* List of daily tweets */}
         <ListTweetsComponent ref="listTweets" dailyTweets={ this.state.dailyTweets } />

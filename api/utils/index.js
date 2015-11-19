@@ -21,6 +21,24 @@ let Utils = {
     return pattern.test(str);
   },
 
+  generateUniqueId: function() {
+    return Date.now() + Math.floor(Math.random() * 1000000000000);
+  },
+
+  getDayFromDate(date) {
+    let rtDate = new Date(date);
+
+    let formatedDate = [
+      rtDate.getUTCFullYear(),
+      "/",
+      rtDate.getUTCMonth() + 1,
+      "/",
+      rtDate.getUTCDate()
+    ].join('');
+
+    return formatedDate;
+  },
+
 };
 
 module.exports = Utils;
