@@ -2,7 +2,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Button, Input, Jumbotron, PageHeader, Grid, Row } from 'react-bootstrap';
+import { Button, Input, Jumbotron, PageHeader, Panel } from 'react-bootstrap';
 import io from 'socket.io-client';
 import _ from 'lodash';
 
@@ -85,24 +85,23 @@ class MainComponent extends Component {
 
         <DailyMessageComponent />
 
-        <br />
-
-        <h2>Ajout d'un nouveau tweet à surveiller:</h2><hr />
-
-        {/* Form to add new daily tweets */}
-        <div className="new-tweet">
-          <Input
-            type="text"
-            value={ this.state.newTweetValue }
-            placeholder="https://twitter.com/wild_touch/status/660064048923418624"
-            ref="input"
-            onChange={ this._handleChange } />
-          <Button
-            bsStyle="primary"
-            onClick={ this._handleClickNew }>
-            Ajouter un nouveau Tweet
-          </Button>
-        </div>
+        {/* Add new daily tweet to watch */}
+        <Panel header="Ajout d'un nouveau tweet à surveiller" bsStyle="warning">
+          {/* Form to add new daily tweets */}
+          <div className="new-tweet">
+            <Input
+              type="text"
+              value={ this.state.newTweetValue }
+              placeholder="https://twitter.com/wild_touch/status/660064048923418624"
+              ref="input"
+              onChange={ this._handleChange } />
+            <Button
+              bsStyle="primary"
+              onClick={ this._handleClickNew }>
+              Ajouter un nouveau Tweet
+            </Button>
+          </div>
+        </Panel>
 
         {/* List of daily tweets */}
         <ListTweetsComponent ref="listTweets" dailyTweets={ this.state.dailyTweets } />
