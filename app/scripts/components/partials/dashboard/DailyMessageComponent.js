@@ -1,7 +1,7 @@
 // Packages
 import React, { Component, PropTypes } from 'react';
 import io from 'socket.io-client';
-import { Input, Button } from 'react-bootstrap';
+import { Input, Button, Panel } from 'react-bootstrap';
 
 // Modules
 import Conf from '../../../conf/conf';
@@ -53,8 +53,7 @@ class DailyMessageComponent extends Component {
   render() {
 
     return (
-      <form>
-        <h2>Modification du message du jour sur la BNF</h2><hr />
+      <Panel header="Modification du message du jour sur la BNF" bsStyle="warning">
 
         <div>
           Exemple de message:
@@ -70,12 +69,13 @@ class DailyMessageComponent extends Component {
           ref="message"
           onChange={ this._handleMessageChange }
         />
+
         <Button
           bsStyle="primary"
           onClick={ this._handleClickNew }>
           Ajouter ou modifier le message
         </Button>
-      </form>
+      </Panel>
     );
 
   }

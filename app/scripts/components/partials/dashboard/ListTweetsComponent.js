@@ -1,6 +1,6 @@
 // Packages
 import React, { Component, PropTypes } from 'react';
-import { Grid, Row } from 'react-bootstrap';
+import { Grid, Row, Panel } from 'react-bootstrap';
 
 // Single tweet card
 import TweetComponent from './TweetComponent';
@@ -25,15 +25,13 @@ class ListTweetsComponent extends Component {
     }
 
     return (
-      <div>
-        <h2>Derniers tweets à surveiller:</h2><hr />
-
+      <Panel header="Derniers tweets à surveiller" bsStyle="warning">
         <Grid>
           <Row className="show-grid">
             { dailyTweets }
           </Row>
         </Grid>
-      </div>
+      </Panel>
     );
 
   }
