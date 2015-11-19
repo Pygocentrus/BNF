@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 // Components
 import HeaderComponent from './HeaderComponent';
+import NotificationsComponent from './NotificationsComponent';
 
 // Utils
 import Utils from '../mixins/utils';
@@ -20,7 +21,8 @@ class AppComponent extends React.Component {
   render() {
     return (
       <div className="wrapper">
-        <HeaderComponent/>
+        <HeaderComponent />
+        <NotificationsComponent />
         { this.props.children }
       </div>
     )

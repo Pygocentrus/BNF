@@ -73,6 +73,14 @@ class MainComponent extends Component {
 
   render() {
 
+    const title = (
+      <h3>Ajout d'un nouveau tweet à surveiller</h3>
+    );
+
+    const innerGlyphicon = (
+      <Glyphicon glyph="globe" />
+    );
+
     return (
       <section id="intro" className="container">
         {/* Simple page header */}
@@ -86,11 +94,12 @@ class MainComponent extends Component {
         <DailyMessageComponent />
 
         {/* Add new daily tweet to watch */}
-        <Panel header="Ajout d'un nouveau tweet à surveiller" bsStyle="warning">
+        <Panel header={ title }>
           {/* Form to add new daily tweets */}
           <div className="new-tweet">
             <Input
               type="text"
+              addonBefore={ innerGlyphicon }
               value={ this.state.newTweetValue }
               placeholder="https://twitter.com/wild_touch/status/660064048923418624"
               ref="input"
@@ -123,7 +132,6 @@ class MainComponent extends Component {
 
   _handleClickNew() {
     // Check whether the url is valid
-    // DailyTweetStore.addDailyTweet(curURL);
     DailyTweetActions.addTweet(this.state.newTweetValue);
   }
 

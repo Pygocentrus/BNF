@@ -17,6 +17,10 @@ class ListTweetsComponent extends Component {
 
     let dailyTweets = [];
 
+    const title = (
+      <h3>Derniers tweets à surveiller</h3>
+    );
+
     // Compose each Tweet cards in the grid
     if (this.props.dailyTweets) {
       dailyTweets = this.props.dailyTweets.map( (tweet) => {
@@ -25,7 +29,7 @@ class ListTweetsComponent extends Component {
     }
 
     return (
-      <Panel header="Derniers tweets à surveiller" bsStyle="warning">
+      <Panel header={ title }>
         <Grid>
           <Row className="show-grid">
             { dailyTweets }
