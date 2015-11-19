@@ -1,12 +1,13 @@
 'use strict';
 
 // Controllers
-var DailyTweetsCtrl = require('./dailyTweets'),
-    LivestreamCtrl  = require('./liveStream'),
-    BnfQueueCtrl    = require('./bnfQueue'),
-    DisplayedCtrl   = require('./displayed'),
-    StatsTweetsCtrl = require('./stats'),
-    RejectedCtrl    = require('./rejected');
+var DailyTweetsCtrl       = require('./dailyTweets'),
+    DailyPhotoMessageCtrl = require('./dailyMessage'),
+    LivestreamCtrl        = require('./liveStream'),
+    BnfQueueCtrl          = require('./bnfQueue'),
+    DisplayedCtrl         = require('./displayed'),
+    StatsTweetsCtrl       = require('./stats'),
+    RejectedCtrl          = require('./rejected');
 
 let SocketManager = {
 
@@ -29,6 +30,27 @@ let SocketManager = {
     socket.on('dashboard:daily-tweets:remove', (data) => {
       DailyTweetsCtrl.removeDailyTweet(data.tweet, (err) => {
         io.emit('dashboard:daily-tweets:remove', { status: err === null ? 200 : 500 });
+      });
+    });
+
+    // Dashboard latest message
+    socket.on('dashboard:daily-photo-msg:latest', () => {
+      DailyPhotoMessageCtrl.getLatestMessage((err, message) => {
+        io.emit('dashboard:daily-photo-msg:latest', { message: message, err: err });
+      });
+    });
+
+    // Dashboard add daily message
+    socket.on('dashboard:daily-photo-msg:new', (data) => {
+      DailyPhotoMessageCtrl.newLatestMessage(data, (err, message) => {
+        io.emit('dashboard:daily-photo-msg:new', { message: message, err: err });
+      });
+    });
+
+    // Dashboard update daily message
+    socket.on('dashboard:daily-photo-msg:update', (data) => {
+      DailyPhotoMessageCtrl.createOrUpdateLatestMessage(data, (err, message) => {
+        io.emit('dashboard:daily-photo-msg:update', { message: message, err: err });
       });
     });
 

@@ -25,11 +25,15 @@ class ListTweetsComponent extends Component {
     }
 
     return (
-      <Grid>
-        <Row className="show-grid">
-          { dailyTweets }
-        </Row>
-      </Grid>
+      <div>
+        <h2>Derniers tweets à surveiller:</h2><hr />
+
+        <Grid>
+          <Row className="show-grid">
+            { dailyTweets }
+          </Row>
+        </Grid>
+      </div>
     );
 
   }
