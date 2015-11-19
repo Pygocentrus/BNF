@@ -19,7 +19,8 @@ var Conf          = require('./conf'),
     SocketManager = require('./controllers/socket');
 
 // Controllers
-var BnfQueueCtrl  = require('./controllers/bnfQueue');
+var BnfQueueCtrl          = require('./controllers/bnfQueue'),
+    DailyPhotoMessageCtrl = require('./controllers/dailyMessage');
 
 // Workers
 var twitterWorker = require('./workers/twitterWorker'),
@@ -82,9 +83,9 @@ let App = {
     app.get(indexRoutes, (req, res) => res.render('index'));
 
     // Open API for the BNF
-    app.get(['/api/item.(json|txt)', '/api/bnf'], (req, res) => {
+    app.get(['/api/item.(json|txt)', '/api/username'], (req, res) => {
       BnfQueueCtrl.getNextQueueItem(io, (err, latestQueueItem) => {
-        if (_.endsWith(req.url, 'txt') || _.endsWith(req.url, 'bnf')) {
+        if (_.endsWith(req.url, 'txt') || _.endsWith(req.url, 'username')) {
           let file = 'api/templates/bnf_message_' + latestQueueItem.lang + '.hbs';
 
           // Try to send lang-customized message using template
@@ -106,6 +107,17 @@ let App = {
         } else {
           // Send full json
           res.json(latestQueueItem);
+        }
+      });
+    });
+
+    // Open API for photo text intro above the username
+    app.get('/api/intro', (req, res) => {
+      DailyPhotoMessageCtrl.getLatestMessage((err, data) => {
+        if (data && data.length && data[0].content) {
+          res.send(data[0].content);
+        } else {
+          res.json("RT sur @wild_touch et découvrez l'expédition #WildTouchExpeditions");
         }
       });
     });
