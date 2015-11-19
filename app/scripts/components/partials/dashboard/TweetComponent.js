@@ -1,6 +1,6 @@
 // Packages
 import React, { Component, PropTypes } from 'react';
-import { Col, Button } from 'react-bootstrap';
+import { Col, Button, Glyphicon } from 'react-bootstrap';
 import io from 'socket.io-client';
 
 // Modules
@@ -29,7 +29,7 @@ class TweetComponent extends Component {
           data-tweetid={ this.props.id }
           onClick={ this._handleRemove }
           bsStyle="danger">
-          Supprimer
+          <Glyphicon glyph="chevron-up" />&nbsp;Supprimer
         </Button>
       </Col>
     );

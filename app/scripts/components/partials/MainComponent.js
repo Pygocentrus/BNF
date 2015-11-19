@@ -2,7 +2,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Button, Input, Jumbotron, PageHeader, Panel } from 'react-bootstrap';
+import { Button, Input, Jumbotron, PageHeader, Panel, Glyphicon } from 'react-bootstrap';
 import io from 'socket.io-client';
 import _ from 'lodash';
 
@@ -98,7 +98,7 @@ class MainComponent extends Component {
             <Button
               bsStyle="primary"
               onClick={ this._handleClickNew }>
-              Ajouter un nouveau Tweet
+              <Glyphicon glyph="retweet" />&nbsp;&nbsp;Ajouter un nouveau Tweet
             </Button>
           </div>
         </Panel>
