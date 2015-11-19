@@ -9,6 +9,7 @@ import Conf from '../conf/conf';
 import Utils from '../mixins/utils';
 import AppDispatcher from '../dispatchers/AppDispatcher';
 import DashboardConstants from '../constants/DashboardConstants';
+import globalActions from '../actions/GlobalActions';
 
 // Internal object of daily tweets
 let _dailyTweets = [];
@@ -35,6 +36,16 @@ function addTweet(tweetUrl) {
 
     // Add this tweet in the backend
     socket.emit('dashboard:daily-tweets:new', _.first(_dailyTweets));
+
+    // Notify change
+    setTimeout(function() {
+      globalActions.triggerNotification({
+        notification: {
+          type: 'success',
+          message: 'Retweet ajouté avec succès'
+        }
+      });
+    }, 500);
   }
 }
 

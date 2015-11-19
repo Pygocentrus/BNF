@@ -52,8 +52,12 @@ class DailyMessageComponent extends Component {
 
   render() {
 
+    const title = (
+      <h3>Modification du message affiché par intermittence sur la BNF</h3>
+    );
+
     return (
-      <Panel header="Modification du message du jour sur la BNF" bsStyle="warning">
+      <Panel header={ title }>
 
         <div>
           Exemple de message:

@@ -6,6 +6,7 @@ import _ from 'lodash';
 // Modules
 import Utils from '../mixins/utils';
 import AppDispatcher from '../dispatchers/AppDispatcher';
+import globalActions from '../actions/GlobalActions';
 import DailyPhotoMessageActions from '../actions/DailyPhotoMessageActions';
 import DailyPhotoMessageConstants from '../constants/DailyPhotoMessageConstants';
 import dailyPhotoMessageApi from '../api/dailyPhotoMessageApi';
@@ -27,6 +28,16 @@ function newMessage(message) {
 
 function updateMessage(message) {
   _message = message;
+
+  // Notify change
+  setTimeout(function() {
+    globalActions.triggerNotification({
+      notification: {
+        type: 'success',
+        message: 'Message modifié avec succès !'
+      }
+    });
+  }, 500);
 }
 
 function updateMessageAPI(message) {
@@ -67,7 +78,7 @@ let DailyPhotoMessageStore = _.merge(EventEmitter.prototype, {
 });
 
 // Register dispatcher callback
-AppDispatcher.register((payload) => {
+DailyPhotoMessageStore.dispatchToken = AppDispatcher.register((payload) => {
   let action = payload.action;
 
   // Define what to do for certain actions
