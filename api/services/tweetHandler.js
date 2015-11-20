@@ -83,23 +83,24 @@ TweetHandler.prototype.shortenPhotoLink = function(link, template) {
 };
 
 TweetHandler.prototype.uploadPhotoAndAnswerToRetweet = function(filePath, retweet) {
+  // Open Twitter API instance
+  let T = this.getTwitterApiInstance();
+
   // Upload photo to Twitter,
   // then answer back to the retweet using this media, to embed the photo
   // so as to avoid direct links towards AWS's picture links
   // then delete local image file
-  this.uploadPhoto(filePath)
-    .then(this.replyToUserWithMedia.bind(this, retweet))
+  this.uploadPhoto(T, filePath)
+    .then(this.replyToUserWithMedia.bind(this, T, retweet))
     .then(this.updateAnsweredStatus)
     .then(Utils.deleteFilePromisified.bind(this, filePath))
     .catch(()=>({}));
 };
 
-TweetHandler.prototype.uploadPhoto = function(filePath) {
+TweetHandler.prototype.uploadPhoto = function(T, filePath) {
   return new Promise((resolve, reject) => {
     if (filePath) {
       let b64content = fs.readFileSync(filePath, { encoding: 'base64' });
-
-      let T = this.getTwitterApiInstance();
 
       // Post the media through Twitter API
       T.post('media/upload', { media_data: b64content }, (err, data, response) => {
@@ -116,15 +117,13 @@ TweetHandler.prototype.uploadPhoto = function(filePath) {
   });
 };
 
-TweetHandler.prototype.replyToUserWithMedia = function(retweet, mediaIdStr) {
+TweetHandler.prototype.replyToUserWithMedia = function(T, retweet, mediaIdStr) {
   return new Promise((resolve, reject) => {
     let params = {
       status: '@' + retweet.username + ', thanks for supporting us!',
       in_reply_to_status_id: retweet.rtIdStr,
       media_ids: [mediaIdStr]
     };
-
-    let T = this.getTwitterApiInstance();
 
     T.post('statuses/update', params, (err, data, response) => {
       if (!err) {
