@@ -50,6 +50,14 @@ let App = {
     mongoUri = isProdEnv ? Conf.mongo.prod : Conf.mongo.dev;
     mongoose.connect('mongodb://' + mongoUri);
 
+    // Close Mongoose connexion on process exit
+    process.on('SIGINT', () => {
+      mongoose.connection.close(() => {
+        console.log('Shut down Mongoose connexion');
+        process.exit(0);
+      });
+    });
+
     // Body parser
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({
