@@ -52,7 +52,7 @@ let AwsWorker = {
                   console.log('Couldn\'t download file from AWS for ' + username);
                 }
               })
-              .catch(console);
+              .catch(console.log);
           });
         });
 
