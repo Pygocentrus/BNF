@@ -53,7 +53,7 @@ TweetHandler.prototype.answerBackToRewteet = function(retweet) {
       .then(this.shortenPhotoLink.bind(null, retweet.bnfPhoto))
       .then(this.replyToUserWithUrl.bind(null, retweet))
       .then(this.updateAnsweredStatus)
-      .catch(()=>({}));
+      .catch(console.log);
   }
 };
 
@@ -94,7 +94,7 @@ TweetHandler.prototype.uploadPhotoAndAnswerToRetweet = function(filePath, retwee
     .then(this.replyToUserWithMedia.bind(this, T, retweet))
     .then(this.updateAnsweredStatus)
     .then(Utils.deleteFilePromisified.bind(this, filePath))
-    .catch(console);
+    .catch(console.log);
 };
 
 TweetHandler.prototype.uploadPhoto = function(T, filePath) {
