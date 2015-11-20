@@ -86,7 +86,8 @@ let App = {
     app.get(['/api/item.(json|txt)', '/api/username'], (req, res) => {
       BnfQueueCtrl.getNextQueueItem(io, (err, latestQueueItem) => {
         if (_.endsWith(req.url, 'txt') || _.endsWith(req.url, 'username')) {
-          let file = 'api/templates/bnf_message_' + latestQueueItem.lang + '.hbs';
+          // let file = 'api/templates/bnf_message_fr' + latestQueueItem.lang + '.hbs';
+          let file = 'api/templates/bnf_message_fr.hbs';
 
           // Try to send lang-customized message using template
           Utils.readFilePromisified(file)
