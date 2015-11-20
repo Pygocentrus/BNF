@@ -94,7 +94,7 @@ TweetHandler.prototype.uploadPhotoAndAnswerToRetweet = function(filePath, retwee
     .then(this.replyToUserWithMedia.bind(this, T, retweet))
     .then(this.updateAnsweredStatus)
     .then(Utils.deleteFilePromisified.bind(this, filePath))
-    .catch(()=>({}));
+    .catch(console);
 };
 
 TweetHandler.prototype.uploadPhoto = function(T, filePath) {
@@ -117,20 +117,52 @@ TweetHandler.prototype.uploadPhoto = function(T, filePath) {
   });
 };
 
+TweetHandler.prototype.composeMessageWithEmbeddedPhoto = function(retweet, cb) {
+  // Open & compile the message according to the user's language
+  let file = 'api/templates/thanks_' + retweet.lang + '.hbs';
+
+  fs.readFile(file, 'utf-8', (err, data) => {
+    if (!err && data) {
+      // Compile the message
+      let tpl = Handlebars.compile(data);
+      let message = tpl({ username: retweet.username });
+
+      cb.call(this, null, message);
+    } else {
+      cb.call(this, err, null);
+    }
+  });
+};
+
 TweetHandler.prototype.replyToUserWithMedia = function(T, retweet, mediaIdStr) {
   return new Promise((resolve, reject) => {
-    let params = {
-      status: '@' + retweet.username + ', thanks for supporting us!',
-      in_reply_to_status_id: retweet.rtIdStr,
-      media_ids: [mediaIdStr]
-    };
-
-    T.post('statuses/update', params, (err, data, response) => {
-      if (!err) {
-        resolve(retweet);
-      } else {
-        reject(retweet);
+    // Fetch answer template according to user's default language
+    this.composeMessageWithEmbeddedPhoto(retweet, (err, message) => {
+      if (err) {
+        // Use default message if something happened with the template file
+        message = [
+          '@',
+          retweet.username,
+          ' Merci de votre engagement pour la biodiversité ! ',
+          'Suivez l’expédition #WildTouchExpeditions - Antarctica!'
+        ].join('');
       }
+
+      // Status params, using RT ID, media ID & message
+      let params = {
+        status: message,
+        in_reply_to_status_id: retweet.rtIdStr,
+        media_ids: [mediaIdStr]
+      };
+
+      // Send back the RT response
+      T.post('statuses/update', params, (err, data, response) => {
+        if (!err) {
+          resolve(retweet);
+        } else {
+          reject(retweet);
+        }
+      });
     });
   });
 };
