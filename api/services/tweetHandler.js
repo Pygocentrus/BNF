@@ -26,6 +26,15 @@ TweetHandler.prototype.isRetweet = function(tweet) {
   return typeof tweet.retweeted_status !== 'undefined';
 };
 
+TweetHandler.prototype.getTwitterApiInstance = function() {
+  return new Twit({
+    consumer_key: Conf.twitterApi.consumer_key,
+    consumer_secret: Conf.twitterApi.consumer_secret,
+    access_token: Conf.twitterApi.access_token,
+    access_token_secret: Conf.twitterApi.access_token_secret
+  });
+};
+
 TweetHandler.prototype.checkOneOfDailyTweet = function(tweet, cb) {
   let retweetId = tweet.retweeted_status.id_str.replace(/\'/g, "");
   let link = 'https?://twitter.com/' + Conf.twitterApi.account + '/status/' + retweetId;
@@ -42,7 +51,7 @@ TweetHandler.prototype.answerBackToRewteet = function(retweet) {
     // Check lang template, shorten image URL, send tweet response & update status
     Utils.readFilePromisified(file)
       .then(this.shortenPhotoLink.bind(null, retweet.bnfPhoto))
-      .then(this.replyToUser.bind(null, retweet))
+      .then(this.replyToUserWithUrl.bind(null, retweet))
       .then(this.updateAnsweredStatus)
       .catch(()=>({}));
   }
@@ -73,7 +82,61 @@ TweetHandler.prototype.shortenPhotoLink = function(link, template) {
   });
 };
 
-TweetHandler.prototype.replyToUser = function(retweet, data) {
+TweetHandler.prototype.uploadPhotoAndAnswerToRetweet = function(filePath, retweet) {
+  // Upload photo to Twitter,
+  // then answer back to the retweet using this media, to embed the photo
+  // so as to avoid direct links towards AWS's picture links
+  // then delete local image file
+  this.uploadPhoto(filePath)
+    .then(this.replyToUserWithMedia.bind(this, retweet))
+    .then(this.updateAnsweredStatus)
+    .then(Utils.deleteFilePromisified.bind(this, filePath))
+    .catch(()=>({}));
+};
+
+TweetHandler.prototype.uploadPhoto = function(filePath) {
+  return new Promise((resolve, reject) => {
+    if (filePath) {
+      let b64content = fs.readFileSync(filePath, { encoding: 'base64' });
+
+      let T = this.getTwitterApiInstance();
+
+      // Post the media through Twitter API
+      T.post('media/upload', { media_data: b64content }, (err, data, response) => {
+        if (err || !data || !data.media_id_string) {
+          reject(err);
+        } else {
+          // Resolve its string ID to link it towards the future response
+          resolve(data.media_id_string);
+        }
+      });
+    } else {
+      reject({ status: 'error', message: 'No file path specified' });
+    }
+  });
+};
+
+TweetHandler.prototype.replyToUserWithMedia = function(retweet, mediaIdStr) {
+  return new Promise((resolve, reject) => {
+    let params = {
+      status: '@' + retweet.username + ', thanks for supporting us!',
+      in_reply_to_status_id: retweet.rtIdStr,
+      media_ids: [mediaIdStr]
+    };
+
+    let T = this.getTwitterApiInstance();
+
+    T.post('statuses/update', params, (err, data, response) => {
+      if (!err) {
+        resolve(retweet);
+      } else {
+        reject(retweet);
+      }
+    });
+  });
+};
+
+TweetHandler.prototype.replyToUserWithUrl = function(retweet, data) {
   return new Promise((resolve, reject) => {
     let template = data.template;
     let tpl = Handlebars.compile(template);
@@ -86,12 +149,7 @@ TweetHandler.prototype.replyToUser = function(retweet, data) {
     // Compile the message
     let message = tpl({ username: retweet.username, picture: link });
 
-    let T = new Twit({
-      consumer_key: Conf.twitterApi.consumer_key,
-      consumer_secret: Conf.twitterApi.consumer_secret,
-      access_token: Conf.twitterApi.access_token,
-      access_token_secret: Conf.twitterApi.access_token_secret
-    });
+    let T = this.getTwitterApiInstance();
 
     // Answer to the user retweet
     // using this new compiled message & the shortened link
@@ -135,16 +193,20 @@ TweetHandler.prototype.checkCountry = function(retweet) {
 };
 
 TweetHandler.prototype.updateAnsweredStatus = function(retweet) {
-  // Update the rewteet status
-  Retweet.findOne({ rtId: retweet.rtId }, (err, rt) => {
-    if (err || !rt) {
-      // Error
-    } else {
-      // If we found the rewteet, let's update its status
-      // to hasBeenReplied
-      rt.hasBeenReplied = true;
-      rt.save((err, updatedRt) => ({}));
-    }
+  return new Promise((resolve, reject) => {
+    // Update the rewteet status
+    Retweet.findOne({ rtId: retweet.rtId }, (err, rt) => {
+      if (err || !rt) {
+        // Error
+      } else {
+        // If we found the rewteet, let's update its status
+        // to hasBeenReplied
+        rt.hasBeenReplied = true;
+        rt.save((err, retweet) => {
+          resolve(null);
+        });
+      }
+    });
   });
 };
 
