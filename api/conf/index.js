@@ -37,6 +37,8 @@ let Conf = {
   vars: {
     liveTweetOffset: 25,
     awsCronJobPatternDelay: '0 * * * * *',
+    awsTmpDownloadDirectory: 'api/downloads/',
+    awsFileNameTimestampSeparator: '-',
   },
 };
 

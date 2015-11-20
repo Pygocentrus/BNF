@@ -3,6 +3,7 @@
 // NPM
 var AWS          = require('aws-sdk'),
     scheduler    = require('node-schedule'),
+    fs           = require('fs'),
     _            = require('lodash');
 
 // Services
@@ -10,6 +11,7 @@ var TweetHandler = require('../services/tweetHandler');
 
 // Modules
 var Conf         = require('../conf'),
+    Utils        = require('../utils'),
     BnfQueueCtrl = require('../controllers/bnfQueue'),
     Retweet      = require('../models/Retweet');
 
@@ -26,15 +28,31 @@ let AwsWorker = {
     // Schedule a CRON job to run each minute
     scheduler.scheduleJob(Conf.vars.awsCronJobPatternDelay, () => {
 
-      // Find each displayed retweets without BNF picture
+      // Find each displayed retweets that hasn't been replied yet
       BnfQueueCtrl
-        .getQueueReTweetsPromise()
+        .getQueueReTweetsNotRepliedPromise()
         .then((retweets) => {
 
-          // For each one of them, try to locate its AWS photo
           _.forEach(retweets, (rt) => {
-            // Let's find the AWS file for that username
-            this.fetchFileStatus(s3, rt);
+            let username = '@' + rt.username;
+
+            // For each one of them, try to locate their AWS photo(s)
+            // and answer back their RT using this photo as an uploaded media
+            this
+              .listFilesFromPattern(s3, username)
+              .then(this.isolateMostRecentFile.bind(this, username))
+              .then(this.downloadFileFromAWS.bind(this, s3))
+              .then((data) => {
+                if (data.status && data.path) {
+                  // Use TwitterHandler to upload an manage Twitter API
+                  new TweetHandler().uploadPhotoAndAnswerToRetweet(data.path, rt);
+                } else {
+                  // TODO: Use simple shortened link, perhaps classic following:
+                  // this.fetchFileStatus(s3, rt);
+                  console.log('Couldn\'t download file from AWS...');
+                }
+              })
+              .catch(() => ({}));
           });
         });
 
@@ -63,6 +81,65 @@ let AwsWorker = {
             new TweetHandler().answerBackToRewteet(updatedRt);
           }
         });
+      }
+    });
+  },
+
+  listFilesFromPattern: function(s3, pattern) {
+    return new Promise((resolve, reject) => {
+      pattern = pattern || '';
+
+      let params = {
+        Bucket: Conf.awsApi.bucket,
+        Prefix: pattern
+      };
+
+      s3.listObjects(params, (err, data) => {
+        if (err || !data) {
+          reject(err);
+        } else {
+          resolve(data.Contents);
+        }
+      });
+    });
+  },
+
+  downloadFileFromAWS: function(s3, filename) {
+    return new Promise((resolve, reject) => {
+      let params = {
+        Bucket: Conf.awsApi.bucket,
+        Key: filename
+      };
+
+      let path = Conf.vars.awsTmpDownloadDirectory + filename;
+      let file = fs.createWriteStream(path);
+
+      // Callback handling to fulfill promise
+      file.on('close', resolve.bind(this, { status: 'success', path: path }));
+      file.on('error', reject);
+
+      // Download the file through a stream
+      s3.getObject(params)
+        .createReadStream()
+        .pipe(file);
+    });
+  },
+
+  isolateMostRecentFile: function(username, files) {
+    return new Promise((resolve, reject) => {
+      let mostRecentFile;
+
+      mostRecentFile = files.reduce((previousFile, currentFile) => {
+        let currentTimestamp = Utils.timestampFromFileNameAws(currentFile.Key, username);
+        let previousTimestamp = Utils.timestampFromFileNameAws(previousFile.Key, username);
+
+        return currentTimestamp > previousTimestamp ? currentFile : previousFile;
+      }, { Key: 0 });
+
+      if (mostRecentFile.Key !== 0) {
+        resolve(mostRecentFile.Key);
+      } else {
+        reject(null);
       }
     });
   },

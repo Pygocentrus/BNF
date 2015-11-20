@@ -1,6 +1,10 @@
 'use strict';
 
+// NPM
 let fs = require('fs');
+
+// Modules
+let Conf = require('../conf');
 
 let Utils = {
 
@@ -11,6 +15,18 @@ let Utils = {
           resolve(data.toString());
         } else {
           reject(err);
+        }
+      });
+    });
+  },
+
+  deleteFilePromisified: function(path) {
+    return new Promise((resolve, reject) => {
+      fs.unlink(path, (err) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
         }
       });
     });
@@ -37,6 +53,22 @@ let Utils = {
     ].join('');
 
     return formatedDate;
+  },
+
+  timestampFromFileNameAws: function(filename, username) {
+    if (filename && username) {
+      // Remove username, special characters and file extension
+      let timestamp = parseInt(filename
+        .replace(username + Conf.vars.awsFileNameTimestampSeparator, '')
+        .replace(/\.(jpg)|(jpeg)|(png)/, ''));
+
+      // Check that parseInt worked successully
+      if (!isNaN(timestamp)) {
+        return timestamp
+      }
+      return 0;
+    }
+    return 0;
   },
 
 };
