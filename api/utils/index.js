@@ -41,7 +41,7 @@ let Utils = {
     return Date.now() + Math.floor(Math.random() * 1000000000000);
   },
 
-  getDayFromDate(date) {
+  getDayFromDate: function(date) {
     let rtDate = new Date(date);
 
     let formatedDate = [

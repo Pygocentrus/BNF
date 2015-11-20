@@ -10,7 +10,7 @@ var DailyPhotoMessage = require('../models/DailyPhotoMessage'),
 
 let dailyPhotoMessageCtrl = {
 
-  getLatestMessage(cb) {
+  getLatestMessage: function(cb) {
     // Find latest message
     DailyPhotoMessage
       .find()
@@ -25,7 +25,7 @@ let dailyPhotoMessageCtrl = {
       });
   },
 
-  newLatestMessage(data, cb) {
+  newLatestMessage: function(data, cb) {
     if (!data || !data.content) {
       cb.apply({ err: 401 }, null);
     }
@@ -43,7 +43,7 @@ let dailyPhotoMessageCtrl = {
     });
   },
 
-  createOrUpdateLatestMessage(message, cb) {
+  createOrUpdateLatestMessage: function(message, cb) {
     let todayDate = Utils.getDayFromDate(Date.now());
     let messageDate = Utils.getDayFromDate(message.date);
 
@@ -82,7 +82,7 @@ let dailyPhotoMessageCtrl = {
     }
   },
 
-  updateLatestMessageFromId(message, cb) {
+  updateLatestMessageFromId: function(message, cb) {
     // Find latest message
     DailyPhotoMessage
       .findOne({ _id: message._id })
@@ -108,4 +108,4 @@ let dailyPhotoMessageCtrl = {
 
 };
 
-export default dailyPhotoMessageCtrl;
+module.exports = dailyPhotoMessageCtrl;
