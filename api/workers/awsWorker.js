@@ -49,10 +49,10 @@ let AwsWorker = {
                 } else {
                   // TODO: Use simple shortened link, perhaps classic following:
                   // this.fetchFileStatus(s3, rt);
-                  console.log('Couldn\'t download file from AWS...');
+                  console.log('Couldn\'t download file from AWS for ' + username);
                 }
               })
-              .catch(() => ({}));
+              .catch(console);
           });
         });
 
