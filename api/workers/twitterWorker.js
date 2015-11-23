@@ -26,6 +26,7 @@ let TwitterWorker = {
 
     // Each time we get a new tweet, we handle it
     stream.on('tweet', function (tweet) {
+      console.log(tweet.user.screen_name, tweet.text);
       if (!_this.isPaused) {
         tweetHandler.manage(tweet);
       }
