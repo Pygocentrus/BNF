@@ -135,9 +135,11 @@ TweetHandler.prototype.composeMessageWithEmbeddedPhoto = function(retweet, cb) {
 };
 
 TweetHandler.prototype.replyToUserWithMedia = function(T, retweet, mediaIdStr) {
+  let _this = this;
+
   return new Promise((resolve, reject) => {
     // Fetch answer template according to user's default language
-    this.composeMessageWithEmbeddedPhoto(retweet, (err, message) => {
+    _this.composeMessageWithEmbeddedPhoto(retweet, (err, message) => {
       if (err) {
         // Use default message if something happened with the template file
         message = [
@@ -228,6 +230,7 @@ TweetHandler.prototype.updateAnsweredStatus = function(retweet) {
     // Update the rewteet status
     Retweet.findOne({ rtId: retweet.rtId }, (err, rt) => {
       if (err || !rt) {
+        console.log('8. Didnt find any RT to update');
         // Error
       } else {
         // If we found the rewteet, let's update its status

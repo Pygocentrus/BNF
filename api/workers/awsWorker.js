@@ -24,6 +24,7 @@ let AwsWorker = {
     AWS.config.sessionToken = Conf.awsApi.sessionToken;
 
     let s3 = new AWS.S3();
+    let _this = this;
 
     // Schedule a CRON job to run each minute
     scheduler.scheduleJob(Conf.vars.awsCronJobPatternDelay, () => {
@@ -38,10 +39,10 @@ let AwsWorker = {
 
             // For each one of them, try to locate their AWS photo(s)
             // and answer back their RT using this photo as an uploaded media
-            this
+            _this
               .listFilesFromPattern(s3, username)
-              .then(this.isolateMostRecentFile.bind(this, username))
-              .then(this.downloadFileFromAWS.bind(this, s3))
+              .then(_this.isolateMostRecentFile.bind(_this, username))
+              .then(_this.downloadFileFromAWS.bind(_this, s3))
               .then((data) => {
                 if (data.status && data.path) {
                   // Use TwitterHandler to upload an manage Twitter API
@@ -54,7 +55,8 @@ let AwsWorker = {
               })
               .catch(console.log);
           });
-        });
+        })
+        .catch(console.log);
 
     });
   },
