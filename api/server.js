@@ -3,6 +3,7 @@
 // NPM
 var express       = require('express'),
     http          = require('http'),
+    basicAuth     = require('basic-auth-connect'),
     hbs           = require('express-handlebars'),
     cliArgs       = require('yargs'),
     bodyParser    = require('body-parser'),
@@ -57,6 +58,9 @@ let App = {
         process.exit(0);
       });
     });
+
+    // Basic authentification, Apache's htaccess replacement
+    app.use(basicAuth(Conf.basicAuth.user, Conf.basicAuth.password));
 
     // Body parser
     app.use(bodyParser.json());
