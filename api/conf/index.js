@@ -1,6 +1,10 @@
 'use strict';
 
 let Conf = {
+  basicAuth: {
+    user: 'admin',
+    password: 'zRC6zqKbUgYtVUAXHYgWafyqYANY8z'
+  },
   ports: {
     dev: 3000,
     staging: 8080,
