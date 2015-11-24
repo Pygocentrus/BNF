@@ -162,7 +162,7 @@ TweetHandler.prototype.replyToUserWithMedia = function(T, retweet, mediaIdStr) {
         if (!err) {
           resolve(retweet);
         } else {
-          reject(retweet);
+          reject(err);
         }
       });
     });
