@@ -115,10 +115,12 @@ let App = {
                 'RT sur @wild_touch et découvrez l\'expédition #WildTouchExpeditions'
               ].join('');
 
+              res.setHeader('Cache-Control', 'max-age=1');
               res.send(message);
             });
         } else {
           // Send full json
+          res.setHeader('Cache-Control', 'max-age=1');
           res.json(latestQueueItem);
         }
       });
@@ -128,6 +130,7 @@ let App = {
     app.get('/api/intro', (req, res) => {
       DailyPhotoMessageCtrl.getLatestMessage((err, data) => {
         if (data && data.length && data[0].content) {
+          res.setHeader('Cache-Control', 'max-age=1');
           res.send(data[0].content);
         } else {
           res.json("RT sur @wild_touch et découvrez l'expédition #WildTouchExpeditions");
