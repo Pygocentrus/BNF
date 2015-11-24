@@ -276,6 +276,9 @@ TweetHandler.prototype.manage = function(tweet) {
           if (!err && retweet) {
             // Broadcast the new tweet
             _this.broadcast(retweet);
+
+            // TODO: Immediately answer back to the retweet,
+            // with estimation delay before display ?s
           }
         });
       }
