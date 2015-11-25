@@ -71,6 +71,13 @@ let Utils = {
     return 0;
   },
 
+  hoursAwayFromDate: function(date) {
+    let rtShownDate = new Date(date);
+    let diffDateInHours = Math.abs(new Date() - rtShownDate) / 36e5;
+
+    return Math.round(diffDateInHours);
+  },
+
 };
 
 module.exports = Utils;

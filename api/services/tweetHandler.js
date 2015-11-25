@@ -169,6 +169,16 @@ TweetHandler.prototype.replyToUserWithMedia = function(T, retweet, mediaIdStr) {
   });
 };
 
+TweetHandler.prototype.replyToUserWithTextOnly = function(retweet) {
+  let file = 'api/templates/thanks_' + retweet.lang + '.hbs';
+
+  // Check lang template, shorten image URL, send tweet response & update status
+  Utils.readFilePromisified(file)
+    .then(this.replyToUserWithText.bind(this, retweet))
+    .then(this.updateAnsweredStatus)
+    .catch(console.log);
+};
+
 TweetHandler.prototype.replyToUserWithUrl = function(retweet, data) {
   return new Promise((resolve, reject) => {
     let template = data.template;
@@ -181,6 +191,32 @@ TweetHandler.prototype.replyToUserWithUrl = function(retweet, data) {
 
     // Compile the message
     let message = tpl({ username: retweet.username, picture: link });
+
+    let T = this.getTwitterApiInstance();
+
+    // Answer to the user retweet
+    // using this new compiled message & the shortened link
+    T.post('statuses/update', {
+      in_reply_to_status_id: retweet.rtIdStr,
+      status: message
+    }, (err, data, response) => {
+      if (!err) {
+        resolve(retweet);
+      } else {
+        reject(retweet);
+      }
+    });
+  });
+};
+
+TweetHandler.prototype.replyToUserWithText = function(retweet, data) {
+  return new Promise((resolve, reject) => {
+
+    let template = data;
+    let tpl = Handlebars.compile(template);
+
+    // Compile the message
+    let message = tpl({ username: retweet.username });
 
     let T = this.getTwitterApiInstance();
 
