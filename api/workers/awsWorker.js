@@ -40,7 +40,7 @@ let AwsWorker = {
             // For each one of them, try to locate their AWS photo(s)
             // and answer back their RT using this photo as an uploaded media
             _this
-              .listFilesFromPattern(s3, username)
+              .listFilesFromPattern(s3, username, rt)
               .then(_this.isolateMostRecentFile.bind(_this, username))
               .then(_this.downloadFileFromAWS.bind(_this, s3))
               .then((data) => {
@@ -54,9 +54,10 @@ let AwsWorker = {
                 }
               })
               .catch(console.log);
+
           });
         })
-        .catch(console.log);
+        .catch();
 
     });
   },
@@ -87,7 +88,7 @@ let AwsWorker = {
     });
   },
 
-  listFilesFromPattern: function(s3, pattern) {
+  listFilesFromPattern: function(s3, pattern, retweet) {
     return new Promise((resolve, reject) => {
       pattern = pattern || '';
 
@@ -100,7 +101,22 @@ let AwsWorker = {
         if (err || !data) {
           reject(err);
         } else {
-          resolve(data.Contents);
+          if (data.Contents && data.Contents.length) {
+            // We found at least one photo
+            resolve(data.Contents);
+          } else {
+            // If we didn't find any matching photo and it's been
+            // more than an hour since it's been displayed,
+            // we answer with simple text, without an image,
+            // otherwise, we wait for an image
+            if (Utils.hoursAwayFromDate(retweet.displayDate) < 1) {
+              resolve(data.Contents);
+            } else {
+              // Otherwise, we answer with simple text, without an image
+              new TweetHandler().replyToUserWithTextOnly(retweet);
+              reject();
+            }
+          }
         }
       });
     });
