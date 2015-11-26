@@ -16,13 +16,13 @@ let Conf = {
     prod: 'localhost/bfm',
   },
   twitterApi: {
-    account: 'pierreguilhou',
+    account: 'fpumir',
     tag: 'pierreguilhou',
     accountId: '',
-    consumer_key: '9vLhRpf785U7ZTEQCuGMsYbLb',
-    consumer_secret: 'ZHU4E62FLYopxO3kIDSWYF0vkYSk9VRzKK1L1uTQtJS2XFKovo',
-    access_token: '2966847166-rt4hyHA8bWauhmSf77Ljaht35z38FWbw6CYRkEZ',
-    access_token_secret: '9o89vO7LfGGWyiP2R8FEIKZo6TUgMin8K6PDgpvXqpNDO',
+    consumer_key: 'iTVsOZnLOTWUZis1jXMfeoUnj',
+    consumer_secret: 'NOK1MUggjvdKiNQnWy3M3w2bbhWyG6Q8IKI0d9XrnqYuNOjOAF',
+    access_token: '15333753-KBgCJ1aAVaLmIcXOfWH4qPQnOwLoBlc77v2vjxVgW',
+    access_token_secret: 'dtiOsdPPrvE32UmntzpFGPk6ArB00ezk3pX917uVi4D4B',
   },
   awsApi: {
     bucket: 'wte-bnf',
@@ -48,19 +48,29 @@ let Conf = {
 
 module.exports = Conf;
 
-// FIXME: Test account
+// FIXME: pierreguilhou app
 // twitterApi: {
-// //   account: 'lemondefr',
-// account: 'pierreguilhou',
-// tag: 'pierreguilhou',
-// accountId: '',
-// consumer_key: '9vLhRpf785U7ZTEQCuGMsYbLb',
-// consumer_secret: 'ZHU4E62FLYopxO3kIDSWYF0vkYSk9VRzKK1L1uTQtJS2XFKovo',
-// access_token: '2966847166-rt4hyHA8bWauhmSf77Ljaht35z38FWbw6CYRkEZ',
-// access_token_secret: '9o89vO7LfGGWyiP2R8FEIKZo6TUgMin8K6PDgpvXqpNDO',
+//   account: 'pierreguilhou',
+//   tag: 'pierreguilhou',
+//   accountId: '',
+//   consumer_key: '9vLhRpf785U7ZTEQCuGMsYbLb',
+//   consumer_secret: 'ZHU4E62FLYopxO3kIDSWYF0vkYSk9VRzKK1L1uTQtJS2XFKovo',
+//   access_token: '2966847166-rt4hyHA8bWauhmSf77Ljaht35z38FWbw6CYRkEZ',
+//   access_token_secret: '9o89vO7LfGGWyiP2R8FEIKZo6TUgMin8K6PDgpvXqpNDO',
 // },
 
-// FIXME: Wild touch account
+// FIXME: fpumir app
+// twitterApi: {
+//   account: 'fpumir',
+//   tag: 'pierreguilhou',
+//   accountId: '',
+//   consumer_key: 'iTVsOZnLOTWUZis1jXMfeoUnj',
+//   consumer_secret: 'NOK1MUggjvdKiNQnWy3M3w2bbhWyG6Q8IKI0d9XrnqYuNOjOAF',
+//   access_token: '15333753-KBgCJ1aAVaLmIcXOfWH4qPQnOwLoBlc77v2vjxVgW',
+//   access_token_secret: 'dtiOsdPPrvE32UmntzpFGPk6ArB00ezk3pX917uVi4D4B',
+// },
+
+// FIXME: wild_touch app
 // twitterApi: {
 //   account: 'wild_touch',
 //   tag: 'BBCBreaking',

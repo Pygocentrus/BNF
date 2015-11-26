@@ -150,6 +150,8 @@ TweetHandler.prototype.replyToUserWithMedia = function(T, retweet, mediaIdStr) {
         ].join('');
       }
 
+      message = message.replace(/^\s+|\s+$/g, '');
+
       // Status params, using RT ID, media ID & message
       let params = {
         status: message,
