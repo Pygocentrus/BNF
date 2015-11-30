@@ -118,7 +118,7 @@ let AwsWorker = {
               resolve(data.Contents);
             } else {
               // Otherwise, we answer with simple text, without an image
-              // new TweetHandler().replyToUserWithTextOnly(retweet);
+              new TweetHandler().replyToUserWithTextOnly(retweet);
               reject('Couldn\'t locate photo [' + pattern + '] - simple response');
             }
           }
