@@ -53,7 +53,10 @@ TweetHandler.prototype.answerBackToRewteet = function(retweet) {
       .then(this.shortenPhotoLink.bind(null, retweet.bnfPhoto))
       .then(this.replyToUserWithUrl.bind(null, retweet))
       .then(this.updateAnsweredStatus)
-      .catch(console.log);
+      .catch(function(err) {
+        err = err || null;
+        Utils.cleanLog(err);
+      });
   }
 };
 
@@ -94,7 +97,10 @@ TweetHandler.prototype.uploadPhotoAndAnswerToRetweet = function(filePath, retwee
     .then(this.replyToUserWithMedia.bind(this, T, retweet))
     .then(this.updateAnsweredStatus)
     .then(Utils.deleteFilePromisified.bind(this, filePath))
-    .catch(console.log);
+    .catch(function(err) {
+      err = err || null;
+      Utils.cleanLog(err);
+    });
 };
 
 TweetHandler.prototype.uploadPhoto = function(T, filePath) {
@@ -112,7 +118,11 @@ TweetHandler.prototype.uploadPhoto = function(T, filePath) {
         }
       });
     } else {
-      reject({ status: 'error', message: 'No file path specified' });
+      reject({
+        status: 'error',
+        name: 'Twitter upload',
+        message: 'No file path specified'
+      });
     }
   });
 };
@@ -178,7 +188,10 @@ TweetHandler.prototype.replyToUserWithTextOnly = function(retweet) {
   Utils.readFilePromisified(file)
     .then(this.replyToUserWithText.bind(this, retweet))
     .then(this.updateAnsweredStatus)
-    .catch(console.log);
+    .catch(function(err) {
+      err = err || null;
+      Utils.cleanLog(err);
+    });
 };
 
 TweetHandler.prototype.replyToUserWithUrl = function(retweet, data) {
@@ -231,7 +244,10 @@ TweetHandler.prototype.replyToUserWithText = function(retweet, data) {
       if (!err) {
         resolve(retweet);
       } else {
-        reject(retweet);
+        reject({
+          name: 'Twitter text response',
+          message: 'Couldn\t answer back to retweet'
+        });
       }
     });
   });
@@ -268,13 +284,22 @@ TweetHandler.prototype.updateAnsweredStatus = function(retweet) {
     // Update the rewteet status
     Retweet.findOne({ rtId: retweet.rtId }, (err, rt) => {
       if (err || !rt) {
-        console.log('8. Didnt find any RT to update');
+        reject({
+          name: 'Update answered status',
+          message: 'No retweet found for ' + rewteet.username + '[' + retweet.rtId + ']',
+        });
         // Error
       } else {
         // If we found the rewteet, let's update its status
         // to hasBeenReplied
         rt.hasBeenReplied = true;
         rt.save((err, retweet) => {
+          if (err || !retweet) {
+            reject({
+              name: 'Update answered status',
+              message: 'Couldn\'t update status for ' + rewteet.username + '[' + retweet.rtId + ']',
+            });
+          }
           resolve(null);
         });
       }

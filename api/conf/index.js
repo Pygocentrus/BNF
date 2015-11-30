@@ -16,13 +16,13 @@ let Conf = {
     prod: 'localhost/bfm',
   },
   twitterApi: {
-    account: 'fpumir',
-    tag: 'pierreguilhou',
+    account: 'wild_touch',
+    tag: 'wild_touch',
     accountId: '',
-    consumer_key: 'iTVsOZnLOTWUZis1jXMfeoUnj',
-    consumer_secret: 'NOK1MUggjvdKiNQnWy3M3w2bbhWyG6Q8IKI0d9XrnqYuNOjOAF',
-    access_token: '15333753-KBgCJ1aAVaLmIcXOfWH4qPQnOwLoBlc77v2vjxVgW',
-    access_token_secret: 'dtiOsdPPrvE32UmntzpFGPk6ArB00ezk3pX917uVi4D4B',
+    consumer_key: 'Nnh1RRFNuhkGKtsKOecwbg',
+    consumer_secret: 'USZv8Hfgu2wof9CzjrNLPIw0Y8L9JK5xsA3sKVbKWM',
+    access_token: '631187764-9a2mi6zKwNmShlUgsgQzcif0MvGSrv4iXkswPx6w',
+    access_token_secret: 'Lg49ajDvqEcOV2jlIjX4XDS34COJE1ykc0ZwEjtkZmM',
   },
   awsApi: {
     bucket: 'wte-bnf',
@@ -73,7 +73,7 @@ module.exports = Conf;
 // FIXME: wild_touch app
 // twitterApi: {
 //   account: 'wild_touch',
-//   tag: 'BBCBreaking',
+//   tag: 'wild_touch',
 //   accountId: '',
 //   consumer_key: 'Nnh1RRFNuhkGKtsKOecwbg',
 //   consumer_secret: 'USZv8Hfgu2wof9CzjrNLPIw0Y8L9JK5xsA3sKVbKWM',
