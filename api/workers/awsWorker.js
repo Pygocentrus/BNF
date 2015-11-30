@@ -164,7 +164,7 @@ let AwsWorker = {
       } else {
         reject({
           name: 'Most recent photo isolate',
-          message: 'Couldn\t isolate most recent file, noe file Key'
+          message: 'Couldn\'t isolate most recent file, no file Key'
         });
       }
     });
