@@ -1,7 +1,12 @@
 'use strict';
 
 // NPM
-let fs = require('fs');
+let fs     = require('fs'),
+    _      = require('lodash'),
+    logger = require('tracer').console({
+              format : "{{timestamp}} - (in {{file}}:{{line}}) -> {{message}}",
+              dateformat : "d/m/yyyy HH:MM:ss"
+             });
 
 // Modules
 let Conf = require('../conf');
@@ -30,6 +35,23 @@ let Utils = {
         }
       });
     });
+  },
+
+  cleanLog: function(err) {
+    if (err && typeof err === 'string') {
+      logger.log(err);
+    } else if (err && err.name || err.message) {
+      logger.log(err.name, err.message);
+    } else if (err) {
+      logger.log(err);
+    } else {
+      logger.log('Unknown err');
+    }
+  },
+
+  getFileName: function(fileName) {
+    // Usage: Utils.getFileName(module.filename);
+    return _.last(fileName.split('/'));
   },
 
   isLink: function(link) {

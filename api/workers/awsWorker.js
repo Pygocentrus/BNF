@@ -50,14 +50,19 @@ let AwsWorker = {
                 } else {
                   // TODO: Use simple shortened link, perhaps classic following:
                   // this.fetchFileStatus(s3, rt);
-                  console.log('Couldn\'t download file from AWS for ' + username);
+                  Utils.cleanLog('Couldn\'t download file from AWS for ' + username);
                 }
               })
-              .catch(console.log);
-
+              .catch(function(err) {
+                err = err || null;
+                Utils.cleanLog(err);
+              });
           });
         })
-        .catch();
+        .catch(function(err) {
+          err = err || null;
+          Utils.cleanLog(err);
+        });
 
     });
   },
@@ -113,8 +118,8 @@ let AwsWorker = {
               resolve(data.Contents);
             } else {
               // Otherwise, we answer with simple text, without an image
-              new TweetHandler().replyToUserWithTextOnly(retweet);
-              reject();
+              // new TweetHandler().replyToUserWithTextOnly(retweet);
+              reject('Couldn\'t locate photo [' + pattern + '] - simple response');
             }
           }
         }
@@ -157,7 +162,10 @@ let AwsWorker = {
       if (mostRecentFile.Key !== 0) {
         resolve(mostRecentFile.Key);
       } else {
-        reject(null);
+        reject({
+          name: 'Most recent photo isolate',
+          message: 'Couldn\t isolate most recent file, noe file Key'
+        });
       }
     });
   },

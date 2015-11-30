@@ -54,7 +54,7 @@ let App = {
     // Close Mongoose connexion on process exit
     process.on('SIGINT', () => {
       mongoose.connection.close(() => {
-        console.log('Shut down Mongoose connexion');
+        console.log('\nShut down Mongoose connexion');
         process.exit(0);
       });
     });
@@ -111,8 +111,7 @@ let App = {
               // Some error happened, let's send regular message
               let message = [
                 '@' + latestQueueItem.username,
-                ' est ambassadeur pour la biodiversité en Antarctique.\n',
-                'RT sur @wild_touch et découvrez l\'expédition #WildTouchExpeditions'
+                ' a rejoint la colonie !'
               ].join('');
 
               res.setHeader('Cache-Control', 'max-age=1');

@@ -11,7 +11,7 @@ let displayedTweetsCtrl = {
   getDisplayedTweets: function(cb) {
     Retweet
       .find({ hasBeenValidated: true, isValid: true, hasBeenDisplayed: true })
-      .sort({ displayDate: 'asc' })
+      .sort({ displayDate: 'desc' })
       .exec((err, retweets) => {
         if (err || !retweets) {
           cb.call(this, err, null);
