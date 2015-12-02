@@ -17,6 +17,7 @@ let Conf = {
   },
   twitterApi: {
     account: 'wild_touch',
+    accounts: ['wild_touch'],
     tag: 'wild_touch',
     accountId: '',
     consumer_key: 'Nnh1RRFNuhkGKtsKOecwbg',
@@ -40,6 +41,7 @@ let Conf = {
   },
   vars: {
     liveTweetOffset: 25,
+    displayedOffset: 100,
     awsCronJobPatternDelay: '0 * * * * *',
     awsTmpDownloadDirectory: 'api/downloads/',
     awsFileNameTimestampSeparator: '-',

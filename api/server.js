@@ -54,7 +54,7 @@ let App = {
     // Close Mongoose connexion on process exit
     process.on('SIGINT', () => {
       mongoose.connection.close(() => {
-        console.log('\nShut down Mongoose connexion');
+        console.log('\n\nShut down Mongoose connexion');
         process.exit(0);
       });
     });

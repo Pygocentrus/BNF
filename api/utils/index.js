@@ -44,8 +44,6 @@ let Utils = {
       logger.log(err.name, err.message);
     } else if (err) {
       logger.log(err);
-    } else {
-      logger.log('Unknown err');
     }
   },
 

@@ -10,6 +10,7 @@ let Rewteet = new Schema({
   rtId: String,
   rtIdStr: String,
   originalTweetId: String,
+  originalTweetAccount: String,
   displayQueueId: Number,
   username: String,
   name: String,

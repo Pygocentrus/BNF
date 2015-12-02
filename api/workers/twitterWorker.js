@@ -22,7 +22,11 @@ let TwitterWorker = {
       access_token_secret: Conf.twitterApi.access_token_secret
     });
 
-    let stream = T.stream('statuses/filter', { track: Conf.twitterApi.account });
+    // Track all conf accounts at the same time
+    // coma-separated, so as to use Twitter's `OR` logical API
+    let tracked = Conf.twitterApi.accounts.join();
+
+    let stream = T.stream('statuses/filter', { track: tracked });
 
     // Each time we get a new tweet, we handle it
     stream.on('tweet', function (tweet) {

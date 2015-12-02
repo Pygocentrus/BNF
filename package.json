@@ -9,7 +9,7 @@
   "scripts": {
     "start": "NODE_ENV=production node --harmony index.js",
     "deps": "echo \"Fetching dependencies...\" && npm i && bower i",
-    "backend": "echo \"Serving backend app\" && node index.js --harmony",
+    "backend": "echo \"Serving backend app\" && node --harmony index.js",
     "backend-prod": "echo \"Serving backend app\" && node index.js --harmony --production",
     "frontend": "echo \"Serving frontent app\" && gulp serve --env dev",
     "frontend-prod": "echo \"Building app\" && gulp build --env production",
