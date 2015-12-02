@@ -78,7 +78,6 @@ let AwsWorker = {
 
     s3.headObject(params, (err, metadata) => {
       if (!err) {
-        // let fileUrl = `${Conf.awsApi.server}/${Conf.awsApi.bucket}/${fileName}`;
         let fileUrl = Conf.awsApi.server + '/' + Conf.awsApi.bucket + '/' + fileName;
 
         // Update the retweet with its new BNF photo

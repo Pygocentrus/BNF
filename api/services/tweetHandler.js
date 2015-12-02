@@ -18,10 +18,6 @@ let TweetHandler = function(io) {
   this.io = io;
 };
 
-TweetHandler.prototype.isNotMainAccountTweet = function(tweet) {
-  return tweet.user && tweet.user.screen_name !== Conf.twitterApi.account;
-};
-
 TweetHandler.prototype.isRetweet = function(tweet) {
   return typeof tweet.retweeted_status !== 'undefined';
 };
@@ -37,7 +33,8 @@ TweetHandler.prototype.getTwitterApiInstance = function() {
 
 TweetHandler.prototype.checkOneOfDailyTweet = function(tweet, cb) {
   let retweetId = tweet.retweeted_status.id_str.replace(/\'/g, "");
-  let link = 'https?://twitter.com/' + Conf.twitterApi.account + '/status/' + retweetId;
+  let accountsRegex = '(' + Conf.twitterApi.accounts.join('|') + ')'
+  let link = 'https?://twitter.com/' + accountsRegex + '/status/' + retweetId;
 
   DailyTweet.find({ link: new RegExp('^' + link + '/?$', 'i') }, (err, rt) => {
     cb(err, rt, tweet);
@@ -225,6 +222,8 @@ TweetHandler.prototype.replyToUserWithUrl = function(retweet, data) {
 };
 
 TweetHandler.prototype.replyToUserWithText = function(retweet, data) {
+  let _this = this;
+
   return new Promise((resolve, reject) => {
 
     let template = data;
@@ -233,7 +232,7 @@ TweetHandler.prototype.replyToUserWithText = function(retweet, data) {
     // Compile the message
     let message = tpl({ username: retweet.username });
 
-    let T = this.getTwitterApiInstance();
+    let T = _this.getTwitterApiInstance();
 
     // Answer to the user retweet
     // using this new compiled message & the shortened link
@@ -314,7 +313,7 @@ TweetHandler.prototype.broadcast = function(tweet) {
 TweetHandler.prototype.manage = function(tweet) {
   var _this = this;
 
-  if (_this.isNotMainAccountTweet(tweet) && _this.isRetweet(tweet)) {
+  if (_this.isRetweet(tweet)) {
 
     let reTweetId = tweet.id_str.replace(/\'/g, "");
     let originalTweetId = tweet.retweeted_status.id_str.replace(/\'/g, "");
@@ -327,6 +326,7 @@ TweetHandler.prototype.manage = function(tweet) {
         rt.rtId = reTweetId;
         rt.rtIdStr = tweet.retweeted_status.id_str;
         rt.originalTweetId = originalTweetId;
+        rt.originalTweetAccount = tweet.retweeted_status.user.screen_name;
         rt.username = tweet.user.screen_name;
         rt.name = tweet.user.name;
         rt.lang = ['fr', 'en'].indexOf(tweet.user.lang) > -1 ? tweet.user.lang : 'fr';
@@ -339,9 +339,6 @@ TweetHandler.prototype.manage = function(tweet) {
           if (!err && retweet) {
             // Broadcast the new tweet
             _this.broadcast(retweet);
-
-            // TODO: Immediately answer back to the retweet,
-            // with estimation delay before display ?s
           }
         });
       }
