@@ -6,12 +6,15 @@ var mongoose = require('mongoose'),
 // Modules
 var Retweet  = require('../models/Retweet');
 
+const MAX_BATCH_SIZE = 9999999;
+
 let StatsTweetsCtrl = {
 
   getAllTweets: function(cb) {
     Retweet
       .find()
       .sort({ displayDate: 'asc' })
+      .batchSize(MAX_BATCH_SIZE)
       .exec((err, retweets) => {
         if (err || !retweets) {
           cb.call(this, err, null);
